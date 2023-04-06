@@ -10,10 +10,11 @@ app.set("view engine", "ejs");
 // middlewares
 //parse html from request bodies
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static("public"));
 
 // routes and controllers
 app.get("/", (req, res) => {
-  res.send("welcome to the auth api");
+  res.render("index");
 });
 
 app.use("/users", require("./controllers/users.js"));
