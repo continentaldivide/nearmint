@@ -16,12 +16,11 @@ I'll be using the Marvel comics API. Example query: `https://gateway.marvel.com:
 
 ![ERD](ERD.png)
 
-# RESTful Route Chart
+## RESTful Route Chart
 
 | VERB   | URL                     | CRUD    | DESCRIPTION                                                                  | VIEW        |
-| :----- | :---------------------- | :------ | :--------------------------------------------------------------------------- | :---------- | --- |
+| :----- | :---------------------- | :------ | :--------------------------------------------------------------------------- | :---------- |
 | GET    | /                       | Read    | Home View                                                                    | Home        |
-|        |                         |         |                                                                              |             |
 | POST   | /users                  | Create  | Add user data to db                                                          |             |
 | GET    | /users/new              | Read    | Display signup form                                                          | Signup Form |
 | GET    | /users/login            | Read    | Display login form                                                           | Login Form  |
@@ -37,7 +36,7 @@ I'll be using the Marvel comics API. Example query: `https://gateway.marvel.com:
 | GET    | /comics/wantlist        | Read    | List of currently logged in user's wanted comics (list of individual issues) |             |
 | POST   | /comics/wantlist        | Create  | Adds selected comic to currently logged in user's wantlist                   |             |
 | DELETE | /comics/wantlist/:id    | Destroy | Removes selected comic from currently logged in user's wantlist              |             |
-| GET    | /characters             | Read    | Main view of characters page with search                                     |             |     |
+| GET    | /characters             | Read    | Main view of characters page with search                                     |             |
 
 ## Installation Instructions
 
