@@ -14,29 +14,30 @@ I'll be using the Marvel comics API. Example query: `https://gateway.marvel.com:
 
 ## ERDs
 
-![ERD](ERD2.png)
+![ERD](ERD.png)
 
 # RESTful Route Chart
 
-| VERB   | URL                   | CRUD    | DESCRIPTION                                                          | VIEW        |
-| :----- | :-------------------- | :------ | :------------------------------------------------------------------- | :---------- |
-| GET    | /                     | Read    | Home View                                                            | Home        |
-|        |                       |         |                                                                      |             |
-| POST   | /users                | Create  | Add user data to db                                                  |             |
-| GET    | /users/new            | Read    | Display signup form                                                  | Signup Form |
-| GET    | /users/login          | Read    | Display login form                                                   | Login Form  |
-| POST   | /users/login          | Read    | Checks user credentials against db                                   |             |
-| GET    | /users/logout         | Read    | Logout user by clearing cookies                                      |             |
-| GET    | /users/profile        | Read    | Display user data                                                    | Profile     |
-| PUT    | /users/:id/           | Update  | Change user password                                                 |             |
-|        |                       |         |                                                                      |             |
-| GET    | /comics               | Read    | Main view of comics page with search                                 |             |
-| GET    | /comics/favorites     | Read    | List of currently logged in user's favorite comics                   |             |
-| POST   | /comics/:id/favorites | Create  | Adds selected comic to currently logged in user's favorites          |             |
-| DELETE | /comics/:id/favorites | Destroy | Removes selected comic from currently logged in user's favorites     |             |
-| GET    | /comics/wanted        | Read    | List of currently logged in user's wanted comics                     |             |
-| POST   | /comics/:id/wanted    | Create  | Adds selected comic to currently logged in user's wanted comics      |             |
-| DELETE | /comics/:id/wanted    | Destroy | Removes selected comic from currently logged in user's wanted comics |             |
+| VERB   | URL                     | CRUD    | DESCRIPTION                                                                  | VIEW        |
+| :----- | :---------------------- | :------ | :--------------------------------------------------------------------------- | :---------- | --- |
+| GET    | /                       | Read    | Home View                                                                    | Home        |
+|        |                         |         |                                                                              |             |
+| POST   | /users                  | Create  | Add user data to db                                                          |             |
+| GET    | /users/new              | Read    | Display signup form                                                          | Signup Form |
+| GET    | /users/login            | Read    | Display login form                                                           | Login Form  |
+| POST   | /users/login            | Read    | Checks user credentials against db                                           |             |
+| GET    | /users/logout           | Read    | Logout user by clearing cookies                                              |             |
+| GET    | /users/profile          | Read    | Display user data                                                            | Profile     |
+| PUT    | /users/                 | Update  | Change user password                                                         |             |
+| GET    | /comics                 | Read    | Main view of comics page with search                                         |             |
+| GET    | /comics/collection      | Read    | List of currently logged in user's comics (list of individual issues)        |             |
+| POST   | /comics/collection      | Create  | Adds selected comic to currently logged in user's collection                 |             |
+| PUT    | /comics/collection/:id/ | Update  | Moves selected comic from currently logged in user's wantlist to collection  |             |
+| DELETE | /comics/collection/:id/ | Destroy | Removes selected comic from currently logged in user's collection            |             |
+| GET    | /comics/wantlist        | Read    | List of currently logged in user's wanted comics (list of individual issues) |             |
+| POST   | /comics/wantlist        | Create  | Adds selected comic to currently logged in user's wantlist                   |             |
+| DELETE | /comics/wantlist/:id    | Destroy | Removes selected comic from currently logged in user's wantlist              |             |
+| GET    | /characters             | Read    | Main view of characters page with search                                     |             |     |
 
 ## Installation Instructions
 
@@ -47,8 +48,8 @@ I'll be using the Marvel comics API. Example query: `https://gateway.marvel.com:
 
 ## User Stories
 
-- _As a collector, I want to mark comics as 'owned' so that I can track what's in my collection._
-- _As a collector, I want to add comics to a wishlist so that I can see which ones I'm missing._
+- _As a collector, I want to add comics I have to a personal collection._
+- _As a collector, I want to add comics to a 'want list' so that I can see which ones I'm still aiming to collect._
 - _As an app user, I want to search for characters so that I can learn about new heroes and villains in the Marvel universe._
 
 ## MVP Goals
