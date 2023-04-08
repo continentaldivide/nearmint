@@ -1,0 +1,25 @@
+<%- include("../partials/header.ejs") %>
+
+<h2>Seach for comics!</h2>
+<h3>
+  (first draft of API interaction: puts image of character on screen if one is
+  found. Search results return array of characters whose names start with
+  provided search query. Character displayed is first result of array.)
+</h3>
+
+<form method="GET" action="/comics">
+  <label for="characterName">Character name:</label>
+  <input type="text" name="characterName" id="characterName" required />
+
+  <button type="submit">Search!</button>
+</form>
+
+<% if (characterName) { %>
+<p><%= characterName %></p>
+<% if (data[0]) { %>
+<img
+  class="small-img"
+  src="<%= data[0].thumbnail.path %>.<%= data[0].thumbnail.extension %>"
+  alt=""
+/>
+<% }} %> <%- include("../partials/footer.ejs") %>

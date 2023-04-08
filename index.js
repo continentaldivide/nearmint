@@ -18,9 +18,10 @@ app.get("/", (req, res) => {
 });
 
 app.use("/users", require("./controllers/users.js"));
+app.use("/comics", require("./controllers/comics.js"));
 
 // listen on a port
 
 app.listen(PORT, () => {
-  console.log(`authenticating users on port ${PORT}`);
+  console.log(`listening on ${PORT}`);
 });
