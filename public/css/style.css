@@ -11,3 +11,15 @@ h2 {
 .small-img {
   max-width: 200px;
 }
+
+form {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-group {
+  display: flex;
+  justify-content: space-between;
+}

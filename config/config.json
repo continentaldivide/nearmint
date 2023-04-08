@@ -2,8 +2,12 @@
   "development": {
     "username": "sequelize",
     "password": "sequelize",
-    "database": "project_two_auth",
+    "database": "marvel_app_db",
     "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL",
     "dialect": "postgres"
   }
 }

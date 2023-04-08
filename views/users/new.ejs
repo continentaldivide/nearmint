@@ -3,12 +3,18 @@
 <h2>Sign up for an account!</h2>
 
 <form method="POST" action="/users">
-  <label for="email">email:</label>
-  <input type="email" name="email" id="email" required />
-
-  <label for="password">password:</label>
-  <input type="password" name="password" id="password" required />
-
+  <div class="input-group">
+    <label for="username">username:</label>
+    <input type="username" name="username" id="username" required />
+  </div>
+  <div class="input-group">
+    <label for="email">email:</label>
+    <input type="email" name="email" id="email" required />
+  </div>
+  <div class="input-group">
+    <label for="password">password:</label>
+    <input type="password" name="password" id="password" required />
+  </div>
   <button type="submit">Sign up!</button>
 </form>
 

@@ -10,8 +10,6 @@ const getTimeAndHash = () => {
   return [timeStamp, hash];
 };
 
-console.log(process.version);
-
 router.get("/", async (req, res) => {
   try {
     let [newTime, newHash] = getTimeAndHash();
