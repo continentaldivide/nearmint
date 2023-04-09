@@ -1,0 +1,23 @@
+<%- include("../partials/header.ejs") %>
+
+<h2>Sign in!</h2>
+
+<% if (infoMessage) { %>
+
+<p><%= infoMessage %></p>
+
+<% } %>
+
+<form method="POST" action="/users/login">
+  <div class="input-group">
+    <label for="username">username:</label>
+    <input type="username" name="username" id="username" required />
+  </div>
+  <div class="input-group">
+    <label for="password">password:</label>
+    <input type="password" name="password" id="password" required />
+  </div>
+  <button type="submit">Sign in!</button>
+</form>
+
+<%- include("../partials/footer.ejs") %>

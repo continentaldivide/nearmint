@@ -3,6 +3,14 @@ const router = express.Router();
 const db = require("../models");
 const bcrypt = require("bcrypt");
 const cryptoJs = require("crypto-js");
+const { Op } = require("sequelize");
+
+const userMessages = {
+  requestSignIn: "Please sign in to continue.",
+  failedSignIn: "Incorrect username or password.",
+  accountAlreadyExists:
+    "Account exists for that username or email.  Please sign in to continue.",
+};
 
 router.get("/new", (req, res) => {
   res.render("users/new");
@@ -17,14 +25,15 @@ router.post("/", async (req, res) => {
     );
     const [newUser, created] = await db.user.findOrCreate({
       where: {
-        username: req.body.username,
+        [Op.or]: [{ username: req.body.username }, { email: req.body.email }],
       },
+      // where: {
+      //   username: req.body.username,
+      // },
     });
     if (!created) {
       console.log("user account exists");
-      res.redirect(
-        "users/login?message='Account exists.  Please log in to continue.'"
-      );
+      res.redirect("users/login?aae=true");
     } else {
       const hashedPassword = bcrypt.hashSync(req.body.password, 12);
       newUser.email = req.body.email;
@@ -42,17 +51,47 @@ router.post("/", async (req, res) => {
   }
 });
 
-// GET /users/login -- show route for a form that lets a user log in
 router.get("/login", (req, res) => {
-  res.send("show a form that lets the user log in");
+  let infoMessage;
+  if (req.query.rsi) {
+    infoMessage = userMessages.requestSignIn;
+  } else if (req.query.fsi) {
+    infoMessage = userMessages.failedSignIn;
+  } else if (req.query.aae) {
+    infoMessage = userMessages.accountAlreadyExists;
+  }
+  res.render("users/login.ejs", {
+    infoMessage,
+  });
 });
 
 // POST /users/login -- authenticate a user's credentials
-router.post("/login", (req, res) => {
-  res.send("verify credentials that are given by the user to log in");
+router.post("/login", async (req, res) => {
+  try {
+    const foundUser = await db.user.findOne({
+      where: {
+        username: req.body.username,
+      },
+    });
+    if (!foundUser) {
+      console.log("User trying to log in was not found in db");
+      res.redirect("/users/login?fsi=true");
+    } else if (!bcrypt.compareSync(req.body.password, foundUser.password)) {
+      console.log("User trying to log in has incorrect password");
+      res.redirect("/users/login?fsi=true");
+    } else {
+      const encryptedPk = cryptoJs.AES.encrypt(
+        foundUser.id.toString(),
+        process.env.ENC_KEY
+      );
+      res.cookie("userSession", encryptedPk.toString());
+      res.redirect("/users/profile");
+    }
+  } catch (error) {
+    console.log("login POST error:" + error);
+  }
 });
 
-// GET /users/logout -- log out the current user
 router.get("/logout", (req, res) => {
   console.log("logging user out");
   res.clearCookie("userSession");
@@ -62,9 +101,7 @@ router.get("/logout", (req, res) => {
 // GET /users/profile -- show authorized users their profile page
 router.get("/profile", (req, res) => {
   if (!res.locals.user) {
-    res.redirect(
-      "/users/login?message='Sorry -- looks like you're not logged in.  Please log in to continue.'"
-    );
+    res.redirect("/users/login?rsi=true");
   } else {
     res.render("users/profile", {
       user: res.locals.user,
@@ -72,5 +109,4 @@ router.get("/profile", (req, res) => {
   }
 });
 
-// export the router instance
 module.exports = router;
