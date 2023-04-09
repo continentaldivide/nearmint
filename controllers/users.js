@@ -36,6 +36,7 @@ router.post("/", async (req, res) => {
       res.redirect("users/login?aae=true");
     } else {
       const hashedPassword = bcrypt.hashSync(req.body.password, 12);
+      newUser.username = req.body.username;
       newUser.email = req.body.email;
       newUser.password = hashedPassword;
       await newUser.save();
