@@ -1,4 +1,3 @@
-// required packages
 const express = require("express");
 const router = express.Router();
 const db = require("../models");
@@ -16,7 +15,6 @@ router.post("/", async (req, res) => {
         req.body.username
       } email = ${req.body.email}`
     );
-    // do a find or create with the user's given email
     const [newUser, created] = await db.user.findOrCreate({
       where: {
         username: req.body.username,
@@ -56,18 +54,18 @@ router.post("/login", (req, res) => {
 
 // GET /users/logout -- log out the current user
 router.get("/logout", (req, res) => {
-  res.send("log a user out");
+  console.log("logging user out");
+  res.clearCookie("userSession");
+  res.redirect("/");
 });
 
 // GET /users/profile -- show authorized users their profile page
 router.get("/profile", (req, res) => {
   if (!res.locals.user) {
-    // redirect them to the login
     res.redirect(
       "/users/login?message='Sorry -- looks like you're not logged in.  Please log in to continue.'"
     );
   } else {
-    // if they are allowed to be here, show them their profile
     res.render("users/profile", {
       user: res.locals.user,
     });
