@@ -12,7 +12,7 @@ router.get("/new", (req, res) => {
 router.post("/", async (req, res) => {
   try {
     console.log(
-      `user creation attempt at ${new Date().toString()}: username = ${
+      `user creation attempt at ${new Date().toLocaleString()}: username = ${
         req.body.username
       } email = ${req.body.email}`
     );
@@ -61,7 +61,17 @@ router.get("/logout", (req, res) => {
 
 // GET /users/profile -- show authorized users their profile page
 router.get("/profile", (req, res) => {
-  res.send("show the currently logged in user their personal profile page");
+  if (!res.locals.user) {
+    // redirect them to the login
+    res.redirect(
+      "/users/login?message='Sorry -- looks like you're not logged in.  Please log in to continue.'"
+    );
+  } else {
+    // if they are allowed to be here, show them their profile
+    res.render("users/profile", {
+      user: res.locals.user,
+    });
+  }
 });
 
 // export the router instance
