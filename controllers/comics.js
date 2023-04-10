@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
 router.get("/search", async (req, res) => {
   try {
     let [newTime, newHash] = getTimeAndHash();
-    let url = `https://gateway.marvel.com:443/v1/public/comics?titleStartsWith=${req.query.series}&ts=${newTime}&apikey=${process.env.PUB_KEY}&hash=${newHash}`;
+    let url = `https://gateway.marvel.com:443/v1/public/comics?titleStartsWith=${req.query.series}&orderBy=-focDate&ts=${newTime}&apikey=${process.env.PUB_KEY}&hash=${newHash}`;
     const response = await fetch(url);
     console.log(url)
     const responseJson = await response.json();
