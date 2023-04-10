@@ -5,9 +5,16 @@
 <% if (series) { %>
 <p>Search results for <%= series %></p>
 
-<% } if (comics) { %>
+<% } if (comics.length > 0) { %>
   <% comics.forEach((comic) => { %>
-    <p> <%= comic.title %> </p>
-<% })} %>
+    <div class="comic-search-result">
+      <p> <%= comic.title %> </p>
+      <a href="<%= comic.urls[0].url %>">view on marvel.com</a>
+      <img src="<%= comic.thumbnail.path %>.<%= comic.thumbnail.extension %>" alt="">
+    </div>
+  <% }) %>
+<% } else { %>
+    <p>No results found.  Please try another search.</p>
+<% } %>
 
 <%- include("../partials/footer.ejs") %>

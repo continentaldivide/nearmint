@@ -23,3 +23,7 @@ form {
   display: flex;
   justify-content: space-between;
 }
+
+.comic-search-result {
+  border: 1px solid red;
+}
