@@ -43,7 +43,12 @@ app.use(async (req, res, next) => {
 
 // routes and controllers
 app.get("/", (req, res) => {
-  res.render("index");
+  if (req.cookies.userSession) {
+    res.render("index_signed_in", {
+      user: res.locals.user,
+    });
+  }
+  res.render("index_not_signed_in");
 });
 
 app.use("/users", require("./controllers/users.js"));

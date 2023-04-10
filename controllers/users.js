@@ -86,7 +86,7 @@ router.post("/login", async (req, res) => {
         process.env.ENC_KEY
       );
       res.cookie("userSession", encryptedPk.toString());
-      res.redirect("/users/profile");
+      res.redirect("/");
     }
   } catch (error) {
     console.log("login POST error:" + error);
