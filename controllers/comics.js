@@ -11,15 +11,20 @@ const getTimeAndHash = () => {
 };
 
 router.get("/", async (req, res) => {
+  res.render("comics/index");
+});
+
+router.get("/search", async (req, res) => {
   try {
     let [newTime, newHash] = getTimeAndHash();
-    let url = `https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=${req.query.characterName}&ts=${newTime}&apikey=${process.env.PUB_KEY}&hash=${newHash}`;
+    let url = `https://gateway.marvel.com:443/v1/public/comics?titleStartsWith=${req.query.series}&ts=${newTime}&apikey=${process.env.PUB_KEY}&hash=${newHash}`;
     const response = await fetch(url);
+    console.log(url)
     const responseJson = await response.json();
-    console.log(req.query.characterName);
-    res.render("comics/index", {
-      characterName: req.query.characterName,
-      data: responseJson.data.results,
+    console.log(req.query.series);
+    res.render("comics/search", {
+      series: req.query.series,
+      comics: responseJson.data.results,
     });
   } catch (error) {
     console.log(error);

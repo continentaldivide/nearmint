@@ -1,0 +1,13 @@
+<%- include("../partials/header.ejs") %>
+
+<h2>search results</h2>
+
+<% if (series) { %>
+<p>Search results for <%= series %></p>
+
+<% } if (comics) { %>
+  <% comics.forEach((comic) => { %>
+    <p> <%= comic.title %> </p>
+<% })} %>
+
+<%- include("../partials/footer.ejs") %>
