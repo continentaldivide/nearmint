@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 require("dotenv").config();
 const cryptoJs = require("crypto-js");
-const user = require("../models/user");
+const db = require("../models");
 
 const getTimeAndHash = () => {
   const timeStamp = new Date().getTime();
@@ -21,9 +21,6 @@ router.get("/search", async (req, res) => {
     let url = `https://gateway.marvel.com:443/v1/public/comics?titleStartsWith=${req.query.series}&orderBy=-focDate&ts=${newTime}&apikey=${process.env.PUB_KEY}&hash=${newHash}`;
     const response = await fetch(url);
     const responseJson = await response.json();
-    // await res.locals.user.createComic({
-    //   marvel_id: responseJson.data.results[0].id,
-    // });
     res.render("comics/search", {
       series: req.query.series,
       comics: responseJson.data.results,
@@ -38,14 +35,19 @@ router.post("/", async (req, res) => {
     if (!res.locals.user) {
       res.redirect("/users/login");
     } else {
-      await res.locals.user.createComic({
-        marvel_id: req.body.id,
-        title: req.body.title,
-        series: req.body.series,
-        issue_number: req.body.issue_number,
-        thumbnail_url: req.body.thumbnail_url,
-        owned: req.body.owned || null,
-        wishlist: req.body.wishlist || null,
+      await db.comic.findOrCreate({
+        where: {
+          marvel_id: req.body.id,
+          user_id: res.locals.user.id,
+        },
+        defaults: {
+          title: req.body.title,
+          series: req.body.series,
+          issue_number: req.body.issue_number,
+          thumbnail_url: req.body.thumbnail_url,
+          owned: req.body.owned || null,
+          wishlist: req.body.wishlist || null,
+        },
       });
       res.status(204).send();
     }
