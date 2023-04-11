@@ -1,0 +1,22 @@
+<%- include("../partials/header.ejs") %>
+
+<h2>Collection</h2>
+
+<% collection.forEach((comic) => { %>
+
+<div>
+  <p><%= comic.title %></p>
+  <form method="POST" action="/comics/collection?_method=DELETE">
+    <input
+      type="text"
+      name="id"
+      id="id"
+      value="<%= comic.id %>"
+      required
+      hidden
+    />
+    <button type="submit">Remove from collection</button>
+  </form>
+</div>
+
+<% }) %> <%- include("../partials/footer.ejs") %>
