@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 require("dotenv").config();
 const cryptoJs = require("crypto-js");
+const user = require("../models/user");
 
 const getTimeAndHash = () => {
   const timeStamp = new Date().getTime();
@@ -19,9 +20,10 @@ router.get("/search", async (req, res) => {
     let [newTime, newHash] = getTimeAndHash();
     let url = `https://gateway.marvel.com:443/v1/public/comics?titleStartsWith=${req.query.series}&orderBy=-focDate&ts=${newTime}&apikey=${process.env.PUB_KEY}&hash=${newHash}`;
     const response = await fetch(url);
-    console.log(url)
     const responseJson = await response.json();
-    console.log(req.query.series);
+    await res.locals.user.createComic({
+      marvel_id: responseJson.data.results[0].id,
+    });
     res.render("comics/search", {
       series: req.query.series,
       comics: responseJson.data.results,

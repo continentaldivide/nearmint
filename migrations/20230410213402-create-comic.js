@@ -2,21 +2,40 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("users", {
+    await queryInterface.createTable("comics", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      username: {
+      marvel_id: {
+        type: Sequelize.INTEGER,
+      },
+      title: {
         type: Sequelize.STRING,
       },
-      email: {
+      series: {
         type: Sequelize.STRING,
       },
-      password: {
+      issue_number: {
+        type: Sequelize.INTEGER,
+      },
+      thumbnail_url: {
         type: Sequelize.STRING,
+      },
+      user_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "users",
+          key: "id",
+        },
+      },
+      owned: {
+        type: Sequelize.BOOLEAN,
+      },
+      wishlist: {
+        type: Sequelize.BOOLEAN,
       },
       created_at: {
         allowNull: false,
@@ -29,6 +48,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("users");
+    await queryInterface.dropTable("comics");
   },
 };

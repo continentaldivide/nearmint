@@ -104,9 +104,7 @@ router.get("/profile", (req, res) => {
   if (!res.locals.user) {
     res.redirect("/users/login?rsi=true");
   } else {
-    res.render("users/profile", {
-      user: res.locals.user,
-    });
+    res.render("users/profile");
   }
 });
 

@@ -47,8 +47,9 @@ app.get("/", (req, res) => {
     res.render("index_signed_in", {
       user: res.locals.user,
     });
+  } else {
+    res.render("index_not_signed_in");
   }
-  res.render("index_not_signed_in");
 });
 
 app.use("/users", require("./controllers/users.js"));
