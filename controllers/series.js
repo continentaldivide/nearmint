@@ -34,4 +34,27 @@ router.get("/search", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  try {
+    if (!res.locals.user) {
+      res.redirect("/users/login");
+    } else {
+      await db.series.findOrCreate({
+        where: {
+          marvel_id: req.body.id,
+          user_id: res.locals.user.id,
+        },
+        defaults: {
+          title: req.body.title,
+          thumbnail_url: req.body.thumbnail_url,
+          marvel_url: req.body.marvel_url,
+        },
+      });
+      res.status(204).send();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = router;
