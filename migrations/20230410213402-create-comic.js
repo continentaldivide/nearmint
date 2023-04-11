@@ -24,6 +24,9 @@ module.exports = {
       thumbnail_url: {
         type: Sequelize.STRING,
       },
+      marvel_url: {
+        type: Sequelize.STRING,
+      },
       user_id: {
         type: Sequelize.INTEGER,
         references: {

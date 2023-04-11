@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       series: DataTypes.STRING,
       issue_number: DataTypes.INTEGER,
       thumbnail_url: DataTypes.STRING,
+      marvel_url: DataTypes.STRING,
       user_id: DataTypes.INTEGER,
       owned: DataTypes.BOOLEAN,
       wishlist: DataTypes.BOOLEAN,

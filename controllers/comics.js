@@ -49,6 +49,7 @@ router.post("/", async (req, res) => {
           series: req.body.series,
           issue_number: req.body.issue_number,
           thumbnail_url: req.body.thumbnail_url,
+          marvel_url: req.body.marvel_url,
           owned: req.body.owned || null,
           wishlist: req.body.wishlist || null,
         },
