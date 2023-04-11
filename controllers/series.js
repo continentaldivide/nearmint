@@ -57,4 +57,34 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/pull_list", async (req, res) => {
+  try {
+    let pull_list = await db.series.findAll({
+      where: {
+        user_id: res.locals.user.id,
+      },
+    });
+    console.log(pull_list);
+    res.render("series/pull_list", {
+      pull_list,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.delete("/pull_list", async (req, res) => {
+  try {
+    await db.series.destroy({
+      where: {
+        id: req.body.id,
+        user_id: res.locals.user.id,
+      },
+    });
+    res.redirect("./pull_list");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = router;

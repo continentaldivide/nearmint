@@ -1,0 +1,22 @@
+<%- include("../partials/header.ejs") %>
+
+<h2>My Pull List</h2>
+
+<% pull_list.forEach((series) => { %>
+
+<div>
+  <p><%= series.title %></p>
+  <form method="POST" action="/series/pull_list?_method=DELETE">
+    <input
+      type="text"
+      name="id"
+      id="id"
+      value="<%= series.id %>"
+      required
+      hidden
+    />
+    <button type="submit">Remove from pull list</button>
+  </form>
+</div>
+
+<% }) %> <%- include("../partials/footer.ejs") %>
