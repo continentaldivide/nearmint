@@ -1,0 +1,19 @@
+<%- include("../partials/header.ejs") %>
+
+<h2>search results</h2>
+
+<% if (query) { %>
+<p>Search results for <%= query %></p>
+
+<% } if (series.length > 0) { %> <% series.forEach((series) => { %>
+<div class="series-search-result">
+  <p><%= series.title %></p>
+  <a href="<%= series.urls[0].url %>">view on marvel.com</a>
+  <img
+    src="<%= series.thumbnail.path %>.<%= series.thumbnail.extension %>"
+    alt=""
+  />
+</div>
+<% }) %> <% } else { %>
+<p>No results found. Please try another search.</p>
+<% } %> <%- include("../partials/footer.ejs") %>

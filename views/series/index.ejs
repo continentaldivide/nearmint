@@ -1,0 +1,12 @@
+<%- include("../partials/header.ejs") %>
+
+<h2>Seach for comics!</h2>
+
+<form method="GET" action="/series/search">
+  <label for="series">Search for Marvel series:</label>
+  <input type="text" name="series" id="series" required />
+
+  <button type="submit">Search!</button>
+</form>
+
+<%- include("../partials/footer.ejs") %>
