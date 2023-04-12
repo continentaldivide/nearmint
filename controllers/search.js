@@ -12,10 +12,14 @@ const getTimeAndHash = () => {
 };
 
 router.get("/", async (req, res) => {
-  res.render("comics/index");
+  res.render("search/index");
 });
 
-router.get("/search", async (req, res) => {
+router.get("/comics", async (req, res) => {
+    res.render("search/comics/index");
+  });
+
+router.get("/comics/results", async (req, res) => {
   try {
     let [newTime, newHash] = getTimeAndHash();
     let url = `https://gateway.marvel.com:443/v1/public/comics?titleStartsWith=${encodeURIComponent(
@@ -25,7 +29,7 @@ router.get("/search", async (req, res) => {
     }&hash=${newHash}`;
     const response = await fetch(url);
     const responseJson = await response.json();
-    res.render("comics/search", {
+    res.render("search/comics/results", {
       series: req.query.series,
       comics: responseJson.data.results,
     });
@@ -34,31 +38,27 @@ router.get("/search", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
-  try {
-    if (!res.locals.user) {
-      res.redirect("/users/login");
-    } else {
-      await db.comic.findOrCreate({
-        where: {
-          marvel_id: req.body.id,
-          user_id: res.locals.user.id,
-        },
-        defaults: {
-          title: req.body.title,
-          series: req.body.series,
-          issue_number: req.body.issue_number,
-          thumbnail_url: req.body.thumbnail_url,
-          marvel_url: req.body.marvel_url,
-          owned: req.body.owned || null,
-          wishlist: req.body.wishlist || null,
-        },
+router.get("/series", async (req, res) => {
+    res.render("search/series/index");
+  });
+  
+  router.get("/series/results", async (req, res) => {
+    try {
+      let [newTime, newHash] = getTimeAndHash();
+      let url = `https://gateway.marvel.com:443/v1/public/series?titleStartsWith=${encodeURIComponent(
+        req.query.series
+      )}&contains=comic&ts=${newTime}&apikey=${
+        process.env.PUB_KEY
+      }&hash=${newHash}`;
+      const response = await fetch(url);
+      const responseJson = await response.json();
+      res.render("search/series/results", {
+        query: req.query.series,
+        series: responseJson.data.results,
       });
-      res.status(204).send();
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.log(error);
-  }
-});
+  });
 
 module.exports = router;

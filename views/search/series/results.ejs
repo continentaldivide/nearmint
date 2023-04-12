@@ -1,4 +1,4 @@
-<%- include("../partials/header.ejs") %>
+<%- include("../../partials/header.ejs") %>
 
 <h2>search results</h2>
 
@@ -13,7 +13,7 @@
     src="<%= series.thumbnail.path %>.<%= series.thumbnail.extension %>"
     alt=""
   />
-  <form method="POST" action="/series">
+  <form method="POST" action="/users/<%= user.username %>/pull_list">
     <input
       type="text"
       name="id"
@@ -52,4 +52,4 @@
 </div>
 <% }) %> <% } else { %>
 <p>No results found. Please try another search.</p>
-<% } %> <%- include("../partials/footer.ejs") %>
+<% } %> <%- include("../../partials/footer.ejs") %>

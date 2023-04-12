@@ -135,9 +135,36 @@ router.get("/:username/collection", async (req, res) => {
         owned: true,
       },
     });
-    res.render("comics/collection", {
+    res.render("users/collection", {
       collection,
     });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.post("/:username/collection", async (req, res) => {
+  try {
+    if (!res.locals.user) {
+      res.redirect("/users/login");
+    } else {
+      await db.comic.findOrCreate({
+        where: {
+          marvel_id: req.body.id,
+          user_id: res.locals.user.id,
+        },
+        defaults: {
+          title: req.body.title,
+          series: req.body.series,
+          issue_number: req.body.issue_number,
+          thumbnail_url: req.body.thumbnail_url,
+          marvel_url: req.body.marvel_url,
+          owned: req.body.owned || null,
+          wishlist: req.body.wishlist || null,
+        },
+      });
+      res.status(204).send();
+    }
   } catch (error) {
     console.log(error);
   }
@@ -189,10 +216,33 @@ router.get("/:username/pull_list", async (req, res) => {
       const response = await fetch(url);
       responseJson = await response.json();
     }
-    res.render("series/pull_list", {
+    res.render("users/pull_list", {
       pull_list,
       comics: responseJson.data.results,
     });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.post("/:username/pull_list", async (req, res) => {
+  try {
+    if (!res.locals.user) {
+      res.redirect("/users/login");
+    } else {
+      await db.series.findOrCreate({
+        where: {
+          marvel_id: req.body.id,
+          user_id: res.locals.user.id,
+        },
+        defaults: {
+          title: req.body.title,
+          thumbnail_url: req.body.thumbnail_url,
+          marvel_url: req.body.marvel_url,
+        },
+      });
+      res.status(204).send();
+    }
   } catch (error) {
     console.log(error);
   }

@@ -1,12 +1,12 @@
-<%- include("../partials/header.ejs") %>
+<%- include("../../partials/header.ejs") %>
 
 <h2>Seach for comics!</h2>
 
-<form method="GET" action="/comics/search">
+<form method="GET" action="/search/comics/results">
   <label for="series">Search for a series:</label>
   <input type="text" name="series" id="series" required />
 
   <button type="submit">Search!</button>
 </form>
 
-<%- include("../partials/footer.ejs") %>
+<%- include("../../partials/footer.ejs") %>
