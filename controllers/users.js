@@ -183,9 +183,18 @@ router.get("/:username/:destination", async (req, res) => {
 
 router.post("/:username/:destination", async (req, res) => {
   try {
+    // for any POST route with a username in the path...
+
+    // if there isn't a signed-in user, request sign in
     if (!res.locals.user) {
-      res.redirect("/users/login");
-    } else {
+      res.redirect("/users/login?rsi=true");
+      return;
+    }
+    // if they're posting a comic, use this block
+    if (
+      req.params.destination === "collection" ||
+      req.params.destination === "wishlist"
+    ) {
       let [newComic, created] = await db.comic.findOrCreate({
         where: {
           marvel_id: req.body.id,
@@ -205,6 +214,21 @@ router.post("/:username/:destination", async (req, res) => {
         ? (newComic.in_collection = true)
         : (newComic.in_wishlist = true);
       await newComic.save();
+      res.status(204).send();
+    }
+    // if they're posting a series, use this block
+    else if (req.params.destination === "pull_list") {
+      await db.series.findOrCreate({
+        where: {
+          marvel_id: req.body.id,
+          user_id: res.locals.user.id,
+        },
+        defaults: {
+          title: req.body.title,
+          thumbnail_url: req.body.thumbnail_url,
+          marvel_url: req.body.marvel_url,
+        },
+      });
       res.status(204).send();
     }
   } catch (error) {
@@ -235,29 +259,6 @@ router.delete("/:username/wishlist", async (req, res) => {
       },
     });
     res.redirect("./wishlist");
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-router.post("/:username/pull_list", async (req, res) => {
-  try {
-    if (!res.locals.user) {
-      res.redirect("/users/login");
-    } else {
-      await db.series.findOrCreate({
-        where: {
-          marvel_id: req.body.id,
-          user_id: res.locals.user.id,
-        },
-        defaults: {
-          title: req.body.title,
-          thumbnail_url: req.body.thumbnail_url,
-          marvel_url: req.body.marvel_url,
-        },
-      });
-      res.status(204).send();
-    }
   } catch (error) {
     console.log(error);
   }
