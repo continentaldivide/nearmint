@@ -103,38 +103,79 @@ router.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
-router.get("/:username/profile", (req, res) => {
-  // just a lil' practice using guard clauses
-  if (!res.locals.user) {
-    res.redirect("/users/login?rsi=true");
-    return;
-  }
-  if (req.params.username !== res.locals.user.username) {
-    res.render("users/unauthorized");
-    return;
-  }
-  res.render("users/profile");
-});
-
-router.get("/:username/collection", async (req, res) => {
+router.get("/:username/:destination", async (req, res) => {
   try {
+    // for any GET route with a username in the path...
+
+    // if there isn't a signed-in user, request sign in
     if (!res.locals.user) {
       res.redirect("/users/login?rsi=true");
       return;
     }
+    // if the signed-in user's username doesn't match the one in the
+    // path, let them know they aren't allowed to view the page
     if (req.params.username !== res.locals.user.username) {
       res.render("users/unauthorized");
       return;
     }
-    let collection = await db.comic.findAll({
-      where: {
-        user_id: res.locals.user.id,
-        in_collection: true,
-      },
-    });
-    res.render("users/collection", {
-      collection,
-    });
+    // otherwise, direct them to profile, collection, wishlist, or
+    // pull list, depending on the request, and then complete any
+    // necessary actions as needed
+    if (req.params.destination === "profile") {
+      res.render("users/profile");
+      return;
+    }
+    if (req.params.destination === "collection") {
+      let collection = await res.locals.user.getComics({
+        where: {
+          in_collection: true,
+        },
+      });
+      res.render("users/collection", {
+        collection,
+      });
+      return;
+    }
+    if (req.params.destination === "wishlist") {
+      let wishlist = await res.locals.user.getComics({
+        where: {
+          in_wishlist: true,
+        },
+      });
+      res.render("users/wishlist", {
+        wishlist,
+      });
+      return;
+    }
+    if (req.params.destination === "pull_list") {
+      let pull_list = await res.locals.user.getSeries();
+      let seriesString = "";
+      let responseJson = { data: { results: [] } };
+      if (pull_list.length > 0) {
+        pull_list.forEach((series) => {
+          seriesString += `${series.marvel_id},`;
+        });
+        let [newTime, newHash] = getTimeAndHash();
+        // Query params include noVariants so that pull list is only showing primary issues
+        // and orderBy focDate to sort by front-of-cover publication date
+        let url = `https://gateway.marvel.com:443/v1/public/comics?noVariants=true&series=${encodeURIComponent(
+          seriesString
+        )}&orderBy=-focDate&limit=10&ts=${newTime}&apikey=${
+          process.env.PUB_KEY
+        }&hash=${newHash}`;
+        const response = await fetch(url);
+        responseJson = await response.json();
+      }
+      res.render("users/pull_list", {
+        pull_list,
+        comics: responseJson.data.results,
+      });
+      return;
+    }
+    // and if they haven't provided a known/expected route, deliver an error
+    else {
+      return res.status(404).send();
+    }
   } catch (error) {
     console.log(error);
   }
@@ -185,30 +226,6 @@ router.delete("/:username/collection", async (req, res) => {
   }
 });
 
-router.get("/:username/wishlist", async (req, res) => {
-  try {
-    if (!res.locals.user) {
-      res.redirect("/users/login?rsi=true");
-      return;
-    }
-    if (req.params.username !== res.locals.user.username) {
-      res.render("users/unauthorized");
-      return;
-    }
-    let wishlist = await db.comic.findAll({
-      where: {
-        user_id: res.locals.user.id,
-        in_wishlist: true,
-      },
-    });
-    res.render("users/wishlist", {
-      wishlist,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-});
-
 router.delete("/:username/wishlist", async (req, res) => {
   try {
     await db.comic.destroy({
@@ -218,47 +235,6 @@ router.delete("/:username/wishlist", async (req, res) => {
       },
     });
     res.redirect("./wishlist");
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-router.get("/:username/pull_list", async (req, res) => {
-  try {
-    if (!res.locals.user) {
-      res.redirect("/users/login?rsi=true");
-      return;
-    }
-    if (req.params.username !== res.locals.user.username) {
-      res.render("users/unauthorized");
-      return;
-    }
-    let pull_list = await db.series.findAll({
-      where: {
-        user_id: res.locals.user.id,
-      },
-    });
-    let seriesString = "";
-    let responseJson = { data: { results: [] } };
-    if (pull_list.length > 0) {
-      pull_list.forEach((series) => {
-        seriesString += `${series.marvel_id},`;
-      });
-      let [newTime, newHash] = getTimeAndHash();
-      // Query params include noVariants so that pull list is only showing primary issues
-      // and orderBy focDate to sort by front-of-cover publication date
-      let url = `https://gateway.marvel.com:443/v1/public/comics?noVariants=true&series=${encodeURIComponent(
-        seriesString
-      )}&orderBy=-focDate&limit=10&ts=${newTime}&apikey=${
-        process.env.PUB_KEY
-      }&hash=${newHash}`;
-      const response = await fetch(url);
-      responseJson = await response.json();
-    }
-    res.render("users/pull_list", {
-      pull_list,
-      comics: responseJson.data.results,
-    });
   } catch (error) {
     console.log(error);
   }
