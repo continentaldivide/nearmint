@@ -236,6 +236,24 @@ router.post("/:username/:destination", async (req, res) => {
   }
 });
 
+router.put("/:username/collection", async (req, res) => {
+  try {
+    let [comic] = await res.locals.user.getComics({
+      where: {
+        id: req.body.id,
+      },
+    });
+    comic.set({
+      in_collection: true,
+      in_wishlist: null,
+    });
+    await comic.save();
+    res.redirect("./wishlist");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 router.delete("/:username/collection", async (req, res) => {
   try {
     await db.comic.destroy({

@@ -20,6 +20,20 @@
     />
     <button type="submit">Remove from wishlist</button>
   </form>
+  <form
+    method="POST"
+    action="/users/<%= user.username %>/collection?_method=PUT"
+  >
+    <input
+      type="text"
+      name="id"
+      id="id"
+      value="<%= comic.id %>"
+      required
+      hidden
+    />
+    <button type="submit">Add to collection</button>
+  </form>
 </div>
 
 <% }) %> <%- include("../partials/footer.ejs") %>
