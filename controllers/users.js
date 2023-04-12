@@ -34,9 +34,6 @@ router.post("/", async (req, res) => {
       where: {
         [Op.or]: [{ username: req.body.username }, { email: req.body.email }],
       },
-      // where: {
-      //   username: req.body.username,
-      // },
     });
     if (!created) {
       console.log("user account exists");
@@ -52,7 +49,7 @@ router.post("/", async (req, res) => {
         process.env.ENC_KEY
       );
       res.cookie("userSession", encryptedPk.toString());
-      res.redirect("/users/profile");
+      res.redirect(`users/${newUser.username}/profile`);
     }
   } catch (error) {
     console.log(error);
@@ -132,7 +129,7 @@ router.get("/:username/collection", async (req, res) => {
     let collection = await db.comic.findAll({
       where: {
         user_id: res.locals.user.id,
-        owned: true,
+        in_collection: true,
       },
     });
     res.render("users/collection", {
@@ -159,8 +156,8 @@ router.post("/:username/collection", async (req, res) => {
           issue_number: req.body.issue_number,
           thumbnail_url: req.body.thumbnail_url,
           marvel_url: req.body.marvel_url,
-          owned: req.body.owned || null,
-          wishlist: req.body.wishlist || null,
+          in_collection: req.body.in_collection || null,
+          in_wishlist: req.body.in_wishlist || null,
         },
       });
       res.status(204).send();

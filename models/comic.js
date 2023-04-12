@@ -25,8 +25,8 @@ module.exports = (sequelize, DataTypes) => {
       thumbnail_url: DataTypes.STRING,
       marvel_url: DataTypes.STRING,
       user_id: DataTypes.INTEGER,
-      owned: DataTypes.BOOLEAN,
-      wishlist: DataTypes.BOOLEAN,
+      in_collection: DataTypes.BOOLEAN,
+      in_wishlist: DataTypes.BOOLEAN,
     },
     {
       sequelize,

@@ -34,10 +34,10 @@ module.exports = {
           key: "id",
         },
       },
-      owned: {
+      in_collection: {
         type: Sequelize.BOOLEAN,
       },
-      wishlist: {
+      in_wishlist: {
         type: Sequelize.BOOLEAN,
       },
       created_at: {
