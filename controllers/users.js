@@ -12,6 +12,13 @@ const userMessages = {
     "Account exists for that username or email.  Please sign in to continue.",
 };
 
+const getTimeAndHash = () => {
+  const timeStamp = new Date().getTime();
+  const payload = timeStamp + process.env.PRIV_KEY + process.env.PUB_KEY;
+  const hash = cryptoJs.MD5(payload).toString();
+  return [timeStamp, hash];
+};
+
 router.get("/new", (req, res) => {
   res.render("users/new");
 });
@@ -145,6 +152,61 @@ router.delete("/:username/collection", async (req, res) => {
       },
     });
     res.redirect("./collection");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.get("/:username/pull_list", async (req, res) => {
+  try {
+    if (!res.locals.user) {
+      res.redirect("/users/login?rsi=true");
+      return;
+    }
+    if (req.params.username !== res.locals.user.username) {
+      res.render("users/unauthorized");
+      return;
+    }
+    let pull_list = await db.series.findAll({
+      where: {
+        user_id: res.locals.user.id,
+      },
+    });
+    let seriesString = "";
+    let responseJson = { data: { results: [] } };
+    if (pull_list.length > 0) {
+      pull_list.forEach((series) => {
+        seriesString += `${series.marvel_id},`;
+      });
+      let [newTime, newHash] = getTimeAndHash();
+      // Query params include noVariants so that pull list is only showing primary issues
+      // and orderBy focDate to sort by front-of-cover publication date
+      let url = `https://gateway.marvel.com:443/v1/public/comics?noVariants=true&series=${encodeURIComponent(
+        seriesString
+      )}&orderBy=-focDate&limit=10&ts=${newTime}&apikey=${
+        process.env.PUB_KEY
+      }&hash=${newHash}`;
+      const response = await fetch(url);
+      responseJson = await response.json();
+    }
+    res.render("series/pull_list", {
+      pull_list,
+      comics: responseJson.data.results,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.delete("/:username/pull_list", async (req, res) => {
+  try {
+    await db.series.destroy({
+      where: {
+        id: req.body.id,
+        user_id: res.locals.user.id,
+      },
+    });
+    res.redirect("./pull_list");
   } catch (error) {
     console.log(error);
   }

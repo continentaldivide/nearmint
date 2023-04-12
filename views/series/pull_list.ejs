@@ -6,7 +6,7 @@
 
 <div>
   <p><%= series.title %></p>
-  <form method="POST" action="/series/pull_list?_method=DELETE">
+  <form method="POST" action="/users/<%= user.username %>/pull_list?_method=DELETE">
     <input
       type="text"
       name="id"
