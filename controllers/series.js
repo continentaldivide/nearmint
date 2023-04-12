@@ -65,19 +65,22 @@ router.get("/pull_list", async (req, res) => {
       },
     });
     let seriesString = "";
-    pull_list.forEach((series) => {
-      seriesString += `${series.marvel_id},`;
-    });
-    let [newTime, newHash] = getTimeAndHash();
-    // Query params include noVariants so that pull list is only showing primary issues
-    // and orderBy focDate to sort by front-of-cover publication date
-    let url = `https://gateway.marvel.com:443/v1/public/comics?noVariants=true&series=${encodeURIComponent(
-      seriesString
-    )}&orderBy=-focDate&limit=10&ts=${newTime}&apikey=${
-      process.env.PUB_KEY
-    }&hash=${newHash}`;
-    const response = await fetch(url);
-    const responseJson = await response.json();
+    let responseJson = { data: { results: [] } };
+    if (pull_list.length > 0) {
+      pull_list.forEach((series) => {
+        seriesString += `${series.marvel_id},`;
+      });
+      let [newTime, newHash] = getTimeAndHash();
+      // Query params include noVariants so that pull list is only showing primary issues
+      // and orderBy focDate to sort by front-of-cover publication date
+      let url = `https://gateway.marvel.com:443/v1/public/comics?noVariants=true&series=${encodeURIComponent(
+        seriesString
+      )}&orderBy=-focDate&limit=10&ts=${newTime}&apikey=${
+        process.env.PUB_KEY
+      }&hash=${newHash}`;
+      const response = await fetch(url);
+      responseJson = await response.json();
+    }
     res.render("series/pull_list", {
       pull_list,
       comics: responseJson.data.results,
