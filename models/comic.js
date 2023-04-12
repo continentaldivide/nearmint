@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       marvel_id: DataTypes.INTEGER,
       title: DataTypes.STRING,
       series: DataTypes.STRING,
-      issue_number: DataTypes.INTEGER,
+      issue_number: DataTypes.FLOAT,
       thumbnail_url: DataTypes.STRING,
       marvel_url: DataTypes.STRING,
       user_id: DataTypes.INTEGER,

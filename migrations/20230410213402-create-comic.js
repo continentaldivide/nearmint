@@ -19,7 +19,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       issue_number: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
       },
       thumbnail_url: {
         type: Sequelize.STRING,
