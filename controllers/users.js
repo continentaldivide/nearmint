@@ -112,4 +112,42 @@ router.get("/:username/profile", (req, res) => {
   res.render("users/profile");
 });
 
+router.get("/:username/collection", async (req, res) => {
+  try {
+    if (!res.locals.user) {
+      res.redirect("/users/login?rsi=true");
+      return;
+    }
+    if (req.params.username !== res.locals.user.username) {
+      res.render("users/unauthorized");
+      return;
+    }
+    let collection = await db.comic.findAll({
+      where: {
+        user_id: res.locals.user.id,
+        owned: true,
+      },
+    });
+    res.render("comics/collection", {
+      collection,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.delete("/:username/collection", async (req, res) => {
+  try {
+    await db.comic.destroy({
+      where: {
+        id: req.body.id,
+        user_id: res.locals.user.id,
+      },
+    });
+    res.redirect("./collection");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = router;

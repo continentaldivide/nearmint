@@ -61,41 +61,4 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/collection", async (req, res) => {
-  try {
-    let collection = await db.comic.findAll({
-      where: {
-        user_id: res.locals.user.id,
-        owned: true,
-      },
-    });
-    console.log(collection);
-    res.render("comics/collection", {
-      collection,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-router.delete("/collection", async (req, res) => {
-  try {
-    await db.comic.destroy({
-      where: {
-        id: req.body.id,
-        user_id: res.locals.user.id,
-      },
-    });
-    let collection = await db.comic.findAll({
-      where: {
-        user_id: res.locals.user.id,
-        owned: true,
-      },
-    });
-    res.redirect("./collection");
-  } catch (error) {
-    console.log(error);
-  }
-});
-
 module.exports = router;
