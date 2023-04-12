@@ -16,8 +16,8 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/comics", async (req, res) => {
-    res.render("search/comics/index");
-  });
+  res.render("search/comics/index");
+});
 
 router.get("/comics/results", async (req, res) => {
   try {
@@ -39,26 +39,26 @@ router.get("/comics/results", async (req, res) => {
 });
 
 router.get("/series", async (req, res) => {
-    res.render("search/series/index");
-  });
-  
-  router.get("/series/results", async (req, res) => {
-    try {
-      let [newTime, newHash] = getTimeAndHash();
-      let url = `https://gateway.marvel.com:443/v1/public/series?titleStartsWith=${encodeURIComponent(
-        req.query.series
-      )}&contains=comic&ts=${newTime}&apikey=${
-        process.env.PUB_KEY
-      }&hash=${newHash}`;
-      const response = await fetch(url);
-      const responseJson = await response.json();
-      res.render("search/series/results", {
-        query: req.query.series,
-        series: responseJson.data.results,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  });
+  res.render("search/series/index");
+});
+
+router.get("/series/results", async (req, res) => {
+  try {
+    let [newTime, newHash] = getTimeAndHash();
+    let url = `https://gateway.marvel.com:443/v1/public/series?titleStartsWith=${encodeURIComponent(
+      req.query.series
+    )}&contains=comic&ts=${newTime}&apikey=${
+      process.env.PUB_KEY
+    }&hash=${newHash}`;
+    const response = await fetch(url);
+    const responseJson = await response.json();
+    res.render("search/series/results", {
+      query: req.query.series,
+      series: responseJson.data.results,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 module.exports = router;

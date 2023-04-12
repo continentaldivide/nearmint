@@ -6,7 +6,10 @@
 
 <div>
   <p><%= comic.title %></p>
-  <form method="POST" action="/users/<%= user.username %>/collection?_method=DELETE">
+  <form
+    method="POST"
+    action="/users/<%= user.username %>/collection?_method=DELETE"
+  >
     <input
       type="text"
       name="id"
