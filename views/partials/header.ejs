@@ -5,22 +5,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/style.css" />
-    <title>User Auth</title>
+    <title>Marvel Comics App</title>
   </head>
   <body>
     <nav>
       <ul>
-        <!-- shown whether user is logged in or not -->
         <li><a href="/">Home</a></li>
         <!-- shown when the user is logged in -->
         <% if (user) { %>
-        <li><a href="/users/profile">Profile</a></li>
+        <li><a href="/users/<%= user.username %>/profile">Profile</a></li>
+        <li><a href="/users/<%= user.username %>/collection">My Collection</a></li>
+        <li><a href="/users/<%= user.username %>/wishlist">My Wishlist</a></li>
+        <li><a href="/users/<%= user.username %>/pull_list">My Pull List</a></li>
         <li><a href="/users/logout">Log out</a></li>
         <!-- shown when the user is logged out -->
         <% } else { %>
-        <li><a href="/users/new">Sign up</a></li>
         <li><a href="/users/login">Sign in</a></li>
+        <li><a href="/users/new">Sign up</a></li>
         <% } %>
       </ul>
     </nav>
-    
