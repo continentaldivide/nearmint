@@ -2,24 +2,29 @@
 
 <h2>Collection</h2>
 
-<% collection.forEach((comic) => { %>
-
-<div>
-  <p><%= comic.title %></p>
-  <form
-    method="POST"
-    action="/users/<%= user.username %>/collection?_method=DELETE"
-  >
-    <input
-      type="text"
-      name="id"
-      id="id"
-      value="<%= comic.id %>"
-      required
-      hidden
-    />
-    <button type="submit">Remove from collection</button>
-  </form>
+<div class="columns">
+  <% collection.forEach((collectionColumn) => { %>
+  <div class="column">
+    <% collectionColumn.forEach((comic) => { %>
+    <div>
+      <p><%= comic.title %></p>
+      <form
+        method="POST"
+        action="/users/<%= user.username %>/collection?_method=DELETE"
+      >
+        <input
+          type="text"
+          name="id"
+          id="id"
+          value="<%= comic.id %>"
+          required
+          hidden
+        />
+        <button type="submit">Remove from collection</button>
+      </form>
+    </div>
+    <% }) %>
+  </div>
+  <% }) %>
 </div>
-
-<% }) %> <%- include("../partials/footer.ejs") %>
+<%- include("../partials/footer.ejs") %>

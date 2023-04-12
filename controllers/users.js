@@ -131,6 +131,38 @@ router.get("/:username/:destination", async (req, res) => {
           in_collection: true,
         },
       });
+      //please do not look at this code
+      let collectionFirstColumn = [],
+        collectionSecondColumn = [],
+        collectionThirdColumn = [],
+        collectionFourthColumn = [],
+        collectionFifthColumn = [];
+
+      collection.forEach((collectionItem, i) => {
+        if (i % 5 === 0) {
+          collectionFirstColumn.push(collectionItem);
+        }
+        if (i % 5 === 1) {
+          collectionSecondColumn.push(collectionItem);
+        }
+        if (i % 5 === 2) {
+          collectionThirdColumn.push(collectionItem);
+        }
+        if (i % 5 === 3) {
+          collectionFourthColumn.push(collectionItem);
+        }
+        if (i % 5 === 4) {
+          collectionFifthColumn.push(collectionItem);
+        }
+      });
+
+      collection = [
+        collectionFirstColumn,
+        collectionSecondColumn,
+        collectionThirdColumn,
+        collectionFourthColumn,
+        collectionFifthColumn,
+      ];
       res.render("users/collection", {
         collection,
       });
