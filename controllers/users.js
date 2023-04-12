@@ -99,13 +99,17 @@ router.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
-// GET /users/profile -- show authorized users their profile page
-router.get("/profile", (req, res) => {
+router.get("/:username/profile", (req, res) => {
+  // just a lil' practice using guard clauses
   if (!res.locals.user) {
     res.redirect("/users/login?rsi=true");
-  } else {
-    res.render("users/profile");
+    return;
   }
+  if (req.params.username !== res.locals.user.username) {
+    res.render("users/unauthorized");
+    return;
+  }
+  res.render("users/profile");
 });
 
 module.exports = router;
