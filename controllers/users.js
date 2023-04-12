@@ -140,12 +140,12 @@ router.get("/:username/collection", async (req, res) => {
   }
 });
 
-router.post("/:username/collection", async (req, res) => {
+router.post("/:username/:destination", async (req, res) => {
   try {
     if (!res.locals.user) {
       res.redirect("/users/login");
     } else {
-      await db.comic.findOrCreate({
+      let [newComic, created] = await db.comic.findOrCreate({
         where: {
           marvel_id: req.body.id,
           user_id: res.locals.user.id,
@@ -156,10 +156,14 @@ router.post("/:username/collection", async (req, res) => {
           issue_number: req.body.issue_number,
           thumbnail_url: req.body.thumbnail_url,
           marvel_url: req.body.marvel_url,
-          in_collection: req.body.in_collection || null,
-          in_wishlist: req.body.in_wishlist || null,
         },
       });
+      // checks whether to add new comic to collection
+      // or wishlist based on route of post request
+      req.params.destination === "collection"
+        ? (newComic.in_collection = true)
+        : (newComic.in_wishlist = true);
+      await newComic.save();
       res.status(204).send();
     }
   } catch (error) {
@@ -176,6 +180,44 @@ router.delete("/:username/collection", async (req, res) => {
       },
     });
     res.redirect("./collection");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.get("/:username/wishlist", async (req, res) => {
+  try {
+    if (!res.locals.user) {
+      res.redirect("/users/login?rsi=true");
+      return;
+    }
+    if (req.params.username !== res.locals.user.username) {
+      res.render("users/unauthorized");
+      return;
+    }
+    let wishlist = await db.comic.findAll({
+      where: {
+        user_id: res.locals.user.id,
+        in_wishlist: true,
+      },
+    });
+    res.render("users/wishlist", {
+      wishlist,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.delete("/:username/wishlist", async (req, res) => {
+  try {
+    await db.comic.destroy({
+      where: {
+        id: req.body.id,
+        user_id: res.locals.user.id,
+      },
+    });
+    res.redirect("./wishlist");
   } catch (error) {
     console.log(error);
   }
