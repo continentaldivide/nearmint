@@ -130,6 +130,10 @@ router.get("/:username/:destination", async (req, res) => {
         where: {
           in_collection: true,
         },
+        order: [
+          ["series", "ASC"],
+          ["issue_number", "DESC"],
+        ],
       });
       //please do not look at this code
       let collectionFirstColumn = [],
