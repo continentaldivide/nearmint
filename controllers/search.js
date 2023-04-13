@@ -11,10 +11,6 @@ const getTimeAndHash = () => {
   return [timeStamp, hash];
 };
 
-router.get("/", async (req, res) => {
-  res.render("search/index");
-});
-
 router.get("/comics", async (req, res) => {
   res.render("search/comics/index");
 });
