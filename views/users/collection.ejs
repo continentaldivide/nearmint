@@ -20,6 +20,9 @@
       </div>
 
       <div class="content">
+        <a href="<%= comic.marvel_url %>" class="button block">
+          View on Marvel.com
+        </a>
         <form
           method="POST"
           action="/users/<%= user.username %>/collection?_method=DELETE"
