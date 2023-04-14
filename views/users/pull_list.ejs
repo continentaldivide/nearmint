@@ -6,7 +6,9 @@
     <% pull_list.forEach((series) => { %>
 
     <div class="tile is-3 is-parent">
-      <div class="tile is-child notification is-black is-flex is-flex-direction-column">
+      <div
+        class="tile is-child notification is-black is-flex is-flex-direction-column"
+      >
         <p class="title"><%= series.title %></p>
         <a href="<%= series.marvel_url %>" class="button is-small mb-2">
           View on Marvel.com
@@ -34,84 +36,111 @@
   </div>
 </section>
 <section>
-  <% if (comics.length > 0) { %> <% comics.forEach((comic) => { %>
-  <div class="comic-search-result">
-    <p><%= comic.title %></p>
-    <a href="<%= comic.urls[0].url %>">view on marvel.com</a>
-    <img
-      src="<%= comic.thumbnail.path %>.<%= comic.thumbnail.extension %>"
-      alt=""
-    />
-    <form method="POST" action="/users/<%= user.username %>/collection">
-      <input
-        type="text"
-        name="id"
-        id="id"
-        value="<%= comic.id %>"
-        required
-        hidden
-      />
-      <input
-        type="text"
-        name="title"
-        id="title"
-        value="<%= comic.title %>"
-        required
-        hidden
-      />
-      <input
-        type="text"
-        name="series"
-        id="series"
-        value="<%= comic.series.name %>"
-        required
-        hidden
-      />
-      <input
-        type="text"
-        name="issue_number"
-        id="issue_number"
-        value="<%= comic.issueNumber %>"
-        required
-        hidden
-      />
-      <input
-        type="text"
-        name="thumbnail_url"
-        id="thumbnail_url"
-        value="<%= comic.thumbnail.path %>.<%= comic.thumbnail.extension %>"
-        required
-        hidden
-      />
-      <input
-        type="text"
-        name="marvel_url"
-        id="marvel_url"
-        value="<%= comic.urls[0].url %>"
-        required
-        hidden
-      />
-      <input
-        type="text"
-        name="in_collection"
-        id="in_collection"
-        value="true"
-        required
-        hidden
-      />
-      <button type="submit">Add to collection</button>
-      <button type="submit" formaction="/users/<%= user.username %>/wishlist">
-        Add to wishlist
-      </button>
-    </form>
+  <div class="comics-container">
+    <% if (comics.length > 0) { %> <% comics.forEach((comic) => { %>
+    <div class="card mb-2 is-flex is-flex-direction-column">
+      <div class="card-image">
+        <figure class="image is-319x491 is-align-content-center">
+          <img
+            src="<%= comic.thumbnail.path %>.<%= comic.thumbnail.extension %>"
+            alt="<%= comic.title %> issue cover"
+          />
+        </figure>
+      </div>
+      <div
+        class="card-content is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-space-between"
+      >
+        <div class="media">
+          <div class="media-content">
+            <p class="title is-4"><%= comic.title %></p>
+            <p class="subtitle is-6"><%= comic.series.name %></p>
+          </div>
+        </div>
+
+        <div class="content is-flex is-flex-direction-column">
+          <a href="<%= comic.urls[0].url %>" class="button is-small mb-2">
+            View on Marvel.com
+          </a>
+          <form method="POST" action="/users/<%= user.username %>/collection" class="is-flex is-flex-direction-column">
+            <input
+              type="text"
+              name="id"
+              id="id"
+              value="<%= comic.id %>"
+              required
+              hidden
+            />
+            <input
+              type="text"
+              name="title"
+              id="title"
+              value="<%= comic.title %>"
+              required
+              hidden
+            />
+            <input
+              type="text"
+              name="series"
+              id="series"
+              value="<%= comic.series.name %>"
+              required
+              hidden
+            />
+            <input
+              type="text"
+              name="issue_number"
+              id="issue_number"
+              value="<%= comic.issueNumber %>"
+              required
+              hidden
+            />
+            <input
+              type="text"
+              name="thumbnail_url"
+              id="thumbnail_url"
+              value="<%= comic.thumbnail.path %>.<%= comic.thumbnail.extension %>"
+              required
+              hidden
+            />
+            <input
+              type="text"
+              name="marvel_url"
+              id="marvel_url"
+              value="<%= comic.urls[0].url %>"
+              required
+              hidden
+            />
+            <input
+              type="text"
+              name="in_collection"
+              id="in_collection"
+              value="true"
+              required
+              hidden
+            />
+            <button type="submit" class="button is-small is-primary mb-2">
+              Add to collection
+            </button>
+            <button
+              type="submit"
+              formaction="/users/<%= user.username %>/wishlist"
+              class="button is-small is-primary"
+            >
+              Add to wishlist
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <% }) %> <% } else { %>
+    <p>
+      Hmm...this is looking a little sparse. Try going to the
+      <a href="/search/series/">series search page</a> and finding a series to
+      add to your pull list!
+    </p>
+    <% } %>
   </div>
-  <% }) %> <% } else { %>
-  <p>
-    Hmm...this is looking a little sparse. Try going to the
-    <a href="/search/series/">series search page</a> and finding a series to add
-    to your pull list!
-  </p>
-  <% } %>
 </section>
 
 <%- include("../partials/footer.ejs") %>

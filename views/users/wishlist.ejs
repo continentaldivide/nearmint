@@ -2,7 +2,6 @@
 
 <h2>Wishlist</h2>
 
-
 <div class="comics-container">
   <% wishlist.forEach((comic) => { %>
   <div class="card mb-2 is-flex is-flex-direction-column">
@@ -14,7 +13,9 @@
         />
       </figure>
     </div>
-    <div class="card-content is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-space-between">
+    <div
+      class="card-content is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-space-between"
+    >
       <div class="media">
         <div class="media-content">
           <p class="title is-4"><%= comic.title %></p>
@@ -27,19 +28,21 @@
           View on Marvel.com
         </a>
         <form
-        method="POST"
-        action="/users/<%= user.username %>/collection?_method=PUT"
-      >
-        <input
-          type="text"
-          name="id"
-          id="id"
-          value="<%= comic.id %>"
-          required
-          hidden
-        />
-        <button type="submit" class="button is-small is-primary mb-2">Add to collection</button>
-      </form>
+          method="POST"
+          action="/users/<%= user.username %>/collection?_method=PUT"
+        >
+          <input
+            type="text"
+            name="id"
+            id="id"
+            value="<%= comic.id %>"
+            required
+            hidden
+          />
+          <button type="submit" class="button is-small is-primary mb-2">
+            Add to collection
+          </button>
+        </form>
         <form
           method="POST"
           action="/users/<%= user.username %>/wishlist?_method=DELETE"
@@ -61,4 +64,4 @@
   </div>
   <% }) %>
 </div>
- <%- include("../partials/footer.ejs") %>
+<%- include("../partials/footer.ejs") %>
