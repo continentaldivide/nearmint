@@ -10,19 +10,85 @@
       class="box is-flex is-flex-direction-column"
     >
       <div class="field">
-        <label for="series" class="label">Series:</label>
+        <label for="series" class="label">Series</label>
         <div class="control">
-          <input type="text" name="series" id="series" required class="input"/>
+          <input type="text" name="series" id="series" required class="input" />
         </div>
-        <p class="help">Must match the <em>start</em> of a series name (e.g., "amazing sp" can return results from Amazing Spider-Man, but "spider-man" cannot)</p>
+        <p class="help">
+          Must match the <em>start</em> of a series name (e.g., "amazing sp" can
+          return results from Amazing Spider-Man, but "spider-man" cannot)
+        </p>
       </div>
 
-      <div class="field">
-        <label for="issueNumber" class="label">Issue number:</label>
-        <div class="control">
-          <input type="text" name="issueNumber" id="issueNumber" required class="input"/>
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <label for="issueNumber" class="label">Issue number</label>
+            <div class="control">
+              <input
+                type="text"
+                name="issueNumber"
+                id="issueNumber"
+                class="input"
+              />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="format" class="label">Format</label>
+            <div class="control">
+              <div class="select">
+                <select name="format" id="format">
+                  <option value="comic">comic</option>
+                  <option value="magazine">magazine</option>
+                  <option value="trade paperback">trade paperback</option>
+                  <option value="hardcover">hardcover</option>
+                  <option value="digest">digest</option>
+                  <option value="graphic novel">graphic novel</option>
+                  <option value="digital comic">digital comic</option>
+                  <option value="infinite comic">infinite comic</option>
+                  <option value="">all</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label for="issueNumber" class="label">Date range</label>
+            <div class="control">
+              <input
+                type="text"
+                name="issueNumber"
+                id="issueNumber"
+                placeholder="2013-01-01,2014-12-31"
+                class="input"
+              />
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="control">
+              <label for="format" class="label">Exclude variants</label>
+              <label class="radio">
+                <input type="radio" id="true" value="true" name="noVariants" />
+                Yes
+              </label>
+              <label class="radio">
+                <input
+                  type="radio"
+                  id="false"
+                  value=""
+                  name="noVariants"
+                  checked
+                />
+                No
+              </label>
+            </div>
+          </div>
         </div>
       </div>
+
       <button type="submit" class="button is-primary">Search!</button>
     </form>
   </div>

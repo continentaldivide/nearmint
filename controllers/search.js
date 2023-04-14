@@ -21,10 +21,17 @@ router.get("/comics/results", async (req, res) => {
     let url = `https://gateway.marvel.com:443/v1/public/comics?orderBy=-focDate&ts=${newTime}&apikey=${
       process.env.PUB_KEY
     }&hash=${newHash}&titleStartsWith=${encodeURIComponent(req.query.series)}`;
+    console.log(req.query)
     if (req.query.issueNumber) {
-        url += `&issueNumber=${req.query.issueNumber}`
+      url += `&issueNumber=${req.query.issueNumber}`;
     }
-    console.log(url)
+    if (req.query.format.length > 0) {
+      url += `&format=${encodeURIComponent(req.query.format)}`;
+    }
+    if (req.query.noVariants.length > 0) {
+        url += `&noVariants=${req.query.noVariants}`;
+      }
+    console.log(url);
     const response = await fetch(url);
     const responseJson = await response.json();
     res.render("search/comics/results", {
