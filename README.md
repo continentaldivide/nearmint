@@ -16,39 +16,43 @@ I'll be using the Marvel comics API. Example query: `https://gateway.marvel.com:
 
 ![ERD](ERD.png)
 
-## RESTful Route Chart
+# RESTful Route Chart
 
-| VERB   | URL                     | CRUD    | DESCRIPTION                                                                  | VIEW        |
-| :----- | :---------------------- | :------ | :--------------------------------------------------------------------------- | :---------- |
-| GET    | /                       | Read    | Home View                                                                    | Home        |
-| POST   | /users                  | Create  | Add user data to db                                                          |             |
-| GET    | /users/new              | Read    | Display signup form                                                          | Signup Form |
-| GET    | /users/login            | Read    | Display login form                                                           | Login Form  |
-| POST   | /users/login            | Read    | Checks user credentials against db                                           |             |
-| GET    | /users/logout           | Read    | Logout user by clearing cookies                                              |             |
-| GET    | /users/profile          | Read    | Display user data                                                            | Profile     |
-| PUT    | /users/                 | Update  | Change user password                                                         |             |
-| GET    | /comics                 | Read    | Main view of comics page with search                                         |             |
-| GET    | /comics/collection      | Read    | List of currently logged in user's comics (list of individual issues)        |             |
-| POST   | /comics/collection      | Create  | Adds selected comic to currently logged in user's collection                 |             |
-| PUT    | /comics/collection/:id/ | Update  | Moves selected comic from currently logged in user's wantlist to collection  |             |
-| DELETE | /comics/collection/:id/ | Destroy | Removes selected comic from currently logged in user's collection            |             |
-| GET    | /comics/wantlist        | Read    | List of currently logged in user's wanted comics (list of individual issues) |             |
-| POST   | /comics/wantlist        | Create  | Adds selected comic to currently logged in user's wantlist                   |             |
-| DELETE | /comics/wantlist/:id    | Destroy | Removes selected comic from currently logged in user's wantlist              |             |
-| GET    | /characters             | Read    | Main view of characters page with search                                     |             |
+| VERB   | URL                           | CRUD    | DESCRIPTION                                                                                                   | VIEW                  |
+|:------ |:----------------------------- |:------- |:------------------------------------------------------------------------------------------------------------- |:--------------------- |
+| GET    | /                             | Read    | Home View                                                                                                     | Home                  |
+|        |                               |         |                                                                                                               |                       |
+| GET    | /users/new                    | Read    | Display signup form                                                                                           | Signup form           |
+| GET    | /users/login                  | Read    | Display login form                                                                                            | Login form            |
+| POST   | /users                        | Create  | Add user data to db                                                                                           | Home                  |
+| POST   | /users/login                  | Read    | Checks user credentials against db                                                                            | Home                  |
+| GET    | /users/logout                 | Read    | Logout user by clearing cookies                                                                               | Home                  |
+| GET    | /users/:username/:destination | Read    | General-purpose route to retrieve resources for a specific user: profile, collection, wishlist, or pull list  | Destination           |
+| POST   | /users/:username/:destination | Create  | General-purpose route to create to resources for a specific user: profile, collection, wishlist, or pull list | Current view          |
+| PUT    | /users/:username/collection   | Update  | General-purpose route to create to resources for a specific user: profile, collection, wishlist, or pull list | Current view          |
+| DELETE | /users/:username/collection   | Destroy | Remove an entity from collection                                                                              | Collection            |
+| DELETE | /users/:username/wishlist     | Destroy | Remove an entity from wishlist                                                                                | Wishlist              |
+| DELETE | /users/:username/pull_list    | Destroy | Remove an entity from pull_list                                                                               | Pull list             |
+|        |                               |         |                                                                                                               |                       |
+| GET    | /search/comics                | Read    | Search form for searching specific comics issues                                                              | Comic search form     |
+| GET    | /search/comics/results        | Read    | Results of comic search                                                                                       | Comic search results  |
+| GET    | /search/series                | Read    | Search form for searching by series                                                                           | Series search form    |
+| GET    | /search/series/results        | Read    | Results of series search                                                                                      | Series search results |
+
 
 ## Installation Instructions
 
 - Fork/clone the repo
 - Run `npm i`
 - Run `npm i dotenv` (not required in production environment, but will be needed for a local deployment)
-- Create a .env file in your repo and add it to your .gitignore; store your public and private Marvel API keys here with variable names PUB_KEY and PRIV_KEY
+- Create a .env file in your repo and add it to your .gitignore; store your public and private Marvel API keys here with variable names `PUB_KEY` and `PRIV_KEY`
+- In your .env file, create an encryption key named `ENC_KEY` for managing cookies
 
 ## User Stories
 
 - _As a collector, I want to add comics I have to a personal collection._
-- _As a collector, I want to add comics to a 'want list' so that I can see which ones I'm still aiming to collect._
+- _As a collector, I want to add comics to a wishlist so that I can see which ones I'm still aiming to collect._
+- _As a collector, I want to take a look at the newest issues of series in my pull list._
 - _As an app user, I want to search for characters so that I can learn about new heroes and villains in the Marvel universe._
 
 ## MVP Goals
