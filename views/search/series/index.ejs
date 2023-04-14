@@ -1,12 +1,28 @@
 <%- include("../../partials/header.ejs") %>
 
-<h2>Seach for series!</h2>
+<h1 class="title has-text-light is-flex is-justify-content-center mt-5">find series for your pull list</h1>
 
-<form method="GET" action="/search/series/results">
-  <label for="series">Search for Marvel series:</label>
-  <input type="text" name="series" id="series" required />
+<div class="columns">
+  <div class="column is-half mx-auto">
+    <form
+      method="GET"
+      action="/search/series/results"
+      class="box is-flex is-flex-direction-column"
+    >
+      <div class="field">
+        <label for="series" class="label">Series</label>
+        <div class="control">
+          <input type="text" name="series" id="series" required class="input" />
+        </div>
+        <p class="help">
+          Must match the <em>start</em> of a series name (e.g., "amazing sp" can
+          return results from Amazing Spider-Man, but "spider-man" cannot)
+        </p>
+      </div>
 
-  <button type="submit">Search!</button>
-</form>
+      <button type="submit" class="button is-primary">Search!</button>
+    </form>
+  </div>
+</div>
 
 <%- include("../../partials/footer.ejs") %>
