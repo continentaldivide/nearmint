@@ -31,7 +31,6 @@ router.get("/comics/results", async (req, res) => {
     if (req.query.noVariants.length > 0) {
         url += `&noVariants=${req.query.noVariants}`;
       }
-    console.log(url);
     const response = await fetch(url);
     const responseJson = await response.json();
     res.render("search/comics/results", {
