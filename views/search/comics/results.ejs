@@ -25,6 +25,7 @@
         <a href="<%= comic.urls[0].url %>" class="button is-small mb-2">
           View on Marvel.com
         </a>
+        <% if (user) { %>
         <form
           method="POST"
           action="/users/<%= user.username %>/collection"
@@ -97,6 +98,7 @@
             Add to wishlist
           </button>
         </form>
+        <% } %>
       </div>
     </div>
   </div>

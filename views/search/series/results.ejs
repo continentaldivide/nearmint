@@ -13,6 +13,7 @@
     src="<%= series.thumbnail.path %>.<%= series.thumbnail.extension %>"
     alt=""
   />
+  <% if (user) { %>
   <form method="POST" action="/users/<%= user.username %>/pull_list">
     <input
       type="text"
@@ -48,6 +49,7 @@
     />
     <button type="submit">Add to my pull list</button>
   </form>
+  <% } %>
 </div>
 <% }) %> <% } else { %>
 <p>No results found. Please try another search.</p>
