@@ -10,7 +10,15 @@
 
 .comics-container > div {
     max-width: 23%;
-    margin: 0 10px;
+    margin: 10px;
+}
+
+form {
+    display: flex;
+}
+
+form > button {
+    flex-grow: 1;
 }
 
 @media only screen and (max-width: 980px) {

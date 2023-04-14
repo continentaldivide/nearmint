@@ -2,7 +2,7 @@
 
 <div class="comics-container">
   <% collection.forEach((comic) => { %>
-  <div class="card block">
+  <div class="card mb-2 is-flex is-flex-direction-column">
     <div class="card-image">
       <figure class="image is-319x491 is-align-content-center">
         <img
@@ -11,7 +11,7 @@
         />
       </figure>
     </div>
-    <div class="card-content">
+    <div class="card-content is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-space-between">
       <div class="media">
         <div class="media-content">
           <p class="title is-4"><%= comic.title %></p>
@@ -19,8 +19,8 @@
         </div>
       </div>
 
-      <div class="content">
-        <a href="<%= comic.marvel_url %>" class="button block">
+      <div class="content is-flex is-flex-direction-column">
+        <a href="<%= comic.marvel_url %>" class="button is-small button mb-2">
           View on Marvel.com
         </a>
         <form
@@ -35,7 +35,7 @@
             required
             hidden
           />
-          <button type="submit" class="button is-danger">
+          <button type="submit" class="button is-small is-danger">
             Remove from collection
           </button>
         </form>
