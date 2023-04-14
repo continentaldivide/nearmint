@@ -2,20 +2,33 @@
 
 <h2>Sign up for an account!</h2>
 
-<form method="POST" action="/users">
-  <div class="input-group">
-    <label for="username">username:</label>
-    <input type="username" name="username" id="username" required />
+<div class="columns">
+  <div class="column is-one-quarter mx-auto">
+    <form method="POST" action="/users" class="box is-flex is-flex-direction-column">
+      <div class="field">
+        <label for="username" class="label">Username</label>
+        <div class="control">
+          <input class="input" type="username" name="username" id="username" required />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="email" class="label">Email</label>
+        <div class="control">
+          <input class="input" type="email" name="email" id="email" required />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="password" class="label">Password</label>
+        <div class="control">
+          <input class="input" type="password" name="password" id="password" required />
+        </div>
+      </div>
+
+      <button type="submit" class="button is-primary"><strong>Sign up</strong></button>
+    </form>
   </div>
-  <div class="input-group">
-    <label for="email">email:</label>
-    <input type="email" name="email" id="email" required />
-  </div>
-  <div class="input-group">
-    <label for="password">password:</label>
-    <input type="password" name="password" id="password" required />
-  </div>
-  <button type="submit">Sign up!</button>
-</form>
+</div>
 
 <%- include("../partials/footer.ejs") %>
