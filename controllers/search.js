@@ -18,11 +18,13 @@ router.get("/comics", async (req, res) => {
 router.get("/comics/results", async (req, res) => {
   try {
     let [newTime, newHash] = getTimeAndHash();
-    let url = `https://gateway.marvel.com:443/v1/public/comics?titleStartsWith=${encodeURIComponent(
-      req.query.series
-    )}&orderBy=-focDate&ts=${newTime}&apikey=${
+    let url = `https://gateway.marvel.com:443/v1/public/comics?orderBy=-focDate&ts=${newTime}&apikey=${
       process.env.PUB_KEY
-    }&hash=${newHash}`;
+    }&hash=${newHash}&titleStartsWith=${encodeURIComponent(req.query.series)}`;
+    if (req.query.issueNumber) {
+        url += `&issueNumber=${req.query.issueNumber}`
+    }
+    console.log(url)
     const response = await fetch(url);
     const responseJson = await response.json();
     res.render("search/comics/results", {

@@ -2,11 +2,30 @@
 
 <h2>Seach for comics!</h2>
 
-<form method="GET" action="/search/comics/results">
-  <label for="series">Search for a series:</label>
-  <input type="text" name="series" id="series" required />
+<div class="columns">
+  <div class="column is-half mx-auto">
+    <form
+      method="GET"
+      action="/search/comics/results"
+      class="box is-flex is-flex-direction-column"
+    >
+      <div class="field">
+        <label for="series" class="label">Series:</label>
+        <div class="control">
+          <input type="text" name="series" id="series" required class="input"/>
+        </div>
+        <p class="help">Must match the <em>start</em> of a series name (e.g., "amazing sp" can return results from Amazing Spider-Man, but "spider-man" cannot)</p>
+      </div>
 
-  <button type="submit">Search!</button>
-</form>
+      <div class="field">
+        <label for="issueNumber" class="label">Issue number:</label>
+        <div class="control">
+          <input type="text" name="issueNumber" id="issueNumber" required class="input"/>
+        </div>
+      </div>
+      <button type="submit" class="button is-primary">Search!</button>
+    </form>
+  </div>
+</div>
 
 <%- include("../../partials/footer.ejs") %>
