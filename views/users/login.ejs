@@ -1,33 +1,55 @@
 <%- include("../partials/header.ejs") %>
 
-<h2>Sign in!</h2>
-
-<% if (infoMessage) { %>
-
-<p><%= infoMessage %></p>
-
-<% } %>
+<h1 class="title has-text-light is-flex is-justify-content-center mt-5">
+  Sign in!
+</h1>
 
 <div class="columns">
   <div class="column is-one-quarter mx-auto">
-    <form method="POST" action="/users/login" class="box is-flex is-flex-direction-column">
+    <form
+      method="POST"
+      action="/users/login"
+      class="box is-flex is-flex-direction-column"
+    >
       <div class="field">
         <label for="username" class="label">Username</label>
         <div class="control">
-          <input class="input" type="username" name="username" id="username" required />
+          <input
+            class="input"
+            type="username"
+            name="username"
+            id="username"
+            required
+          />
         </div>
       </div>
 
       <div class="field">
         <label for="password" class="label">Password</label>
         <div class="control">
-          <input class="input" type="password" name="password" id="password" required />
+          <input
+            class="input"
+            type="password"
+            name="password"
+            id="password"
+            required
+          />
         </div>
       </div>
 
-      <button type="submit" class="button is-primary"><strong>Sign in</strong></button>
+      <button type="submit" class="button is-primary">
+        <strong>Sign in</strong>
+      </button>
     </form>
   </div>
 </div>
+
+<% if (infoMessage) { %>
+
+  <p class="has-text-warning is-size-4 is-flex is-justify-content-center mt-5">
+    <%= infoMessage %>
+  </p>
+  
+  <% } %>
 
 <%- include("../partials/footer.ejs") %>

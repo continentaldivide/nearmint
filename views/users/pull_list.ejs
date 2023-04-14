@@ -60,7 +60,11 @@
           <a href="<%= comic.urls[0].url %>" class="button is-small mb-2">
             View on Marvel.com
           </a>
-          <form method="POST" action="/users/<%= user.username %>/collection" class="is-flex is-flex-direction-column">
+          <form
+            method="POST"
+            action="/users/<%= user.username %>/collection"
+            class="is-flex is-flex-direction-column"
+          >
             <input
               type="text"
               name="id"
@@ -133,10 +137,15 @@
     </div>
 
     <% }) %> <% } else { %>
-    <p>
+
+    <p
+      class="title has-text-light is-size-4 is-flex is-justify-content-center mt-5"
+    >
       Hmm...this is looking a little sparse. Try going to the
-      <a href="/search/series/">series search page</a> and finding a series to
-      add to your pull list!
+      <a href="/search/series/" class="has-text-primary mx-2"
+        >series search page</a
+      >
+      and finding a series to add to your pull list!
     </p>
     <% } %>
   </div>
