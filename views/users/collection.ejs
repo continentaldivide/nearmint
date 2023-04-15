@@ -11,7 +11,9 @@
         />
       </figure>
     </div>
-    <div class="card-content is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-space-between">
+    <div
+      class="card-content is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-space-between"
+    >
       <div class="media">
         <div class="media-content">
           <p class="title is-4"><%= comic.title %></p>
@@ -23,6 +25,7 @@
         <a href="<%= comic.marvel_url %>" class="button is-small mb-2">
           View on Marvel.com
         </a>
+        <% if (showDeleteButton) { %>
         <form
           method="POST"
           action="/users/<%= user.username %>/collection?_method=DELETE"
@@ -39,6 +42,7 @@
             Remove from collection
           </button>
         </form>
+        <% } %>
       </div>
     </div>
   </div>

@@ -36,7 +36,7 @@ router.post("/", async (req, res) => {
       },
       defaults: {
         collection_public: false,
-      }
+      },
     });
     if (!created) {
       console.log("user account exists");
@@ -115,11 +115,44 @@ router.get("/:username/:destination", async (req, res) => {
       res.redirect("/users/login?rsi=true");
       return;
     }
-    // if the signed-in user's username doesn't match the one in the
-    // path, let them know they aren't allowed to view the page
+    // if the signed-in user's username doesn't match the one in the path,
     if (req.params.username !== res.locals.user.username) {
-      res.render("users/unauthorized");
-      return;
+      // find the user referenced in the path
+      let pathUser = await db.user.findOne({
+        where: {
+          username: req.params.username,
+        },
+      });
+      // user referenced in path doesn't exist?  goodbye
+      if (!pathUser) {
+        res.render("users/unauthorized");
+        return;
+      }
+      // check whether the successfully-found path user has their collection set
+      // to public, and if so, pass a bool asking the client to hide the delete
+      // from collection button (button won't work anyway, hiding is just cosmetic)
+      if (pathUser.dataValues.collection_public) {
+        let collection = await pathUser.getComics({
+          where: {
+            in_collection: true,
+          },
+          order: [
+            ["series", "ASC"],
+            ["issue_number", "DESC"],
+          ],
+        });
+        let showDeleteButton = false;
+        res.render("users/collection", {
+          collection,
+          showDeleteButton,
+        });
+        return;
+      }
+      // if path user collection not set to public, goodbye
+      else {
+        res.render("users/unauthorized");
+        return;
+      }
     }
     // otherwise, direct them to profile, collection, wishlist, or
     // pull list, depending on the request, and then complete any
@@ -141,6 +174,7 @@ router.get("/:username/:destination", async (req, res) => {
 
       res.render("users/collection", {
         collection,
+        showDeleteButton: true,
       });
       return;
     }
