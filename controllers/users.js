@@ -34,6 +34,9 @@ router.post("/", async (req, res) => {
       where: {
         [Op.or]: [{ username: req.body.username }, { email: req.body.email }],
       },
+      defaults: {
+        collection_public: false,
+      }
     });
     if (!created) {
       console.log("user account exists");
