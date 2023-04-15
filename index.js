@@ -54,6 +54,10 @@ app.get("/", (req, res) => {
   }
 });
 
+app.get("/error", (req, res) => {
+  res.render("error");
+});
+
 app.use("/users", require("./controllers/users.js"));
 app.use("/search", require("./controllers/search.js"));
 

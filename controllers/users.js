@@ -179,6 +179,7 @@ router.get("/:username/:destination", async (req, res) => {
     }
     // and if they haven't provided a known/expected route, deliver an error
     else {
+      res.redirect("/error");
       return res.status(404).send();
     }
   } catch (error) {
