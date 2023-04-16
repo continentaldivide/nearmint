@@ -159,7 +159,6 @@ router.get("/:username/:destination", async (req, res) => {
     // necessary actions as needed
     if (req.params.destination === "profile") {
       let isCollectionPublic = res.locals.user.collection_public;
-      console.log(isCollectionPublic);
       res.render("users/profile", {
         isCollectionPublic,
       });
@@ -278,6 +277,23 @@ router.post("/:username/:destination", async (req, res) => {
       });
       res.status(204).send();
     }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.put("/:username/profile", async (req, res) => {
+  try {
+    if (res.locals.user.collection_public) {
+    res.locals.user.set({
+      collection_public: false,
+    })}
+    else if (!res.locals.user.collection_public) {
+      res.locals.user.set({
+        collection_public: true,
+      })}
+    await res.locals.user.save();
+    res.redirect("./profile");
   } catch (error) {
     console.log(error);
   }

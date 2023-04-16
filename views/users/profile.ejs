@@ -22,14 +22,21 @@
           <p>Your collection is currently <strong>private.</strong></p>
           <% } %>
         </div>
-        <button class="button is-primary my-auto">
-          Make collection
-          <% if (isCollectionPublic) { %>
-            private
-            <% } else { %>
-            public
-            <% } %>
-        </button>
+        <div class="my-auto">
+          <form
+            method="POST"
+            action="/users/<%= user.username %>/profile?_method=PUT"
+          >
+            <button type="submit" class="button is-primary">
+              Make collection
+              <% if (isCollectionPublic) { %>
+                private
+              <% } else { %>
+                public
+              <% } %>
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
