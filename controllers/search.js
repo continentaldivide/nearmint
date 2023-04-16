@@ -28,11 +28,11 @@ router.get("/comics/results", async (req, res) => {
       url += `&format=${encodeURIComponent(req.query.format)}`;
     }
     if (req.query.noVariants.length > 0) {
-        url += `&noVariants=${req.query.noVariants}`;
-      }
-      if (req.query.dateRange.length > 0) {
-        url += `&dateRange=${req.query.dateRange}`;
-      }
+      url += `&noVariants=${req.query.noVariants}`;
+    }
+    if (req.query.dateRange.length > 0) {
+      url += `&dateRange=${req.query.dateRange}`;
+    }
     const response = await fetch(url);
     const responseJson = await response.json();
     res.render("search/comics/results", {

@@ -158,7 +158,11 @@ router.get("/:username/:destination", async (req, res) => {
     // pull list, depending on the request, and then complete any
     // necessary actions as needed
     if (req.params.destination === "profile") {
-      res.render("users/profile");
+      let isCollectionPublic = res.locals.user.collection_public;
+      console.log(isCollectionPublic);
+      res.render("users/profile", {
+        isCollectionPublic,
+      });
       return;
     }
     if (req.params.destination === "collection") {
