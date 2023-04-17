@@ -106,17 +106,10 @@ router.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
-router.get("/:username/:destination", async (req, res) => {
+router.get("/:username/collection", async (req, res) => {
   try {
-    // for any GET route with a username in the path...
-
-    // if there isn't a signed-in user, request sign in
-    if (!res.locals.user) {
-      res.redirect("/users/login?rsi=true");
-      return;
-    }
-    // if the signed-in user's username doesn't match the one in the path,
-    if (req.params.username !== res.locals.user.username) {
+    // if not signed in or if signed-in user's username doesn't match the one in the path,
+    if (!res.locals.user || req.params.username !== res.locals.user.username) {
       // find the user referenced in the path
       let pathUser = await db.user.findOne({
         where: {
@@ -128,9 +121,9 @@ router.get("/:username/:destination", async (req, res) => {
         res.render("users/unauthorized");
         return;
       }
-      // check whether the successfully-found path user has their collection set
-      // to public, and if so, pass a bool asking the client to hide the delete
-      // from collection button (button won't work anyway, hiding is just cosmetic)
+      /* check whether the successfully-found path user has their collection set
+      to public, and if so, pass a bool asking the client to hide the 'delete
+      from collection' button (button won't work anyway, hiding is just cosmetic) */
       if (pathUser.dataValues.collection_public) {
         let collection = await pathUser.getComics({
           where: {
@@ -154,17 +147,8 @@ router.get("/:username/:destination", async (req, res) => {
         return;
       }
     }
-    // otherwise, direct them to profile, collection, wishlist, or
-    // pull list, depending on the request, and then complete any
-    // necessary actions as needed
-    if (req.params.destination === "profile") {
-      let isCollectionPublic = res.locals.user.collection_public;
-      res.render("users/profile", {
-        isCollectionPublic,
-      });
-      return;
-    }
-    if (req.params.destination === "collection") {
+    // finally, if this is the signed-in user going to their own collection
+    else {
       let collection = await res.locals.user.getComics({
         where: {
           in_collection: true,
@@ -178,6 +162,33 @@ router.get("/:username/:destination", async (req, res) => {
       res.render("users/collection", {
         collection,
         showDeleteButton: true,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.get("/:username/:destination", async (req, res) => {
+  try {
+    // for any non-collection GET route with a username in the path...
+
+    // if there isn't a signed-in user, request sign in
+    if (!res.locals.user) {
+      res.redirect("/users/login?rsi=true");
+      return;
+    }
+    // if logged in user is trying to navigate to other user's page, goodbye
+    if (req.params.username !== res.locals.user.username) {
+      res.render("users/unauthorized");
+      return;
+    }
+    /* otherwise, direct them to profile, wishlist, or pull list, depending
+    on the request, and then complete any necessary actions as needed */
+    if (req.params.destination === "profile") {
+      let isCollectionPublic = res.locals.user.collection_public;
+      res.render("users/profile", {
+        isCollectionPublic,
       });
       return;
     }
@@ -201,8 +212,8 @@ router.get("/:username/:destination", async (req, res) => {
           seriesString += `${series.marvel_id},`;
         });
         let [newTime, newHash] = getTimeAndHash();
-        // Query params include noVariants so that pull list is only showing primary issues
-        // and orderBy focDate to sort by front-of-cover publication date
+        /* Query params include noVariants so that pull list is only showing primary issues
+        and orderBy focDate to sort by front-of-cover publication date */
         let url = `https://gateway.marvel.com:443/v1/public/comics?noVariants=true&series=${encodeURIComponent(
           seriesString
         )}&orderBy=-focDate&limit=10&ts=${newTime}&apikey=${
@@ -285,13 +296,14 @@ router.post("/:username/:destination", async (req, res) => {
 router.put("/:username/profile", async (req, res) => {
   try {
     if (res.locals.user.collection_public) {
-    res.locals.user.set({
-      collection_public: false,
-    })}
-    else if (!res.locals.user.collection_public) {
+      res.locals.user.set({
+        collection_public: false,
+      });
+    } else if (!res.locals.user.collection_public) {
       res.locals.user.set({
         collection_public: true,
-      })}
+      });
+    }
     await res.locals.user.save();
     res.redirect("./profile");
   } catch (error) {
