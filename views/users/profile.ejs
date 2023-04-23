@@ -4,39 +4,37 @@
   Welcome to your profile, <%= user.username %>!
 </h1>
 
-<div class="columns">
-  <div class="column is-half mx-auto">
-    <div class="box is-flex is-flex-direction-column">
-      <div class="title">settings</div>
-      <div class="settings">
-        <div>
-          <p>
-            <strong>Visible collection:</strong> By default, your collection is
-            private. If you prefer, you can make your collection visible to
-            others.
-          </p>
-          <br />
-          <% if (isCollectionPublic) { %>
-          <p>Your collection is currently <strong>public.</strong></p>
-          <% } else { %>
-          <p>Your collection is currently <strong>private.</strong></p>
-          <% } %>
-        </div>
-        <div class="my-auto">
-          <form
-            method="POST"
-            action="/users/<%= user.username %>/profile?_method=PUT"
-          >
-            <button type="submit" class="button is-primary">
-              Make collection
-              <% if (isCollectionPublic) { %>
-                private
-              <% } else { %>
-                public
-              <% } %>
-            </button>
-          </form>
-        </div>
+<div class="settings-container">
+  <div class="box is-flex is-flex-direction-column">
+    <div class="title">settings</div>
+    <div class="settings">
+      <div>
+        <p>
+          <strong>Visible collection:</strong> By default, your collection is
+          private. If you prefer, you can make your collection visible to
+          others.
+        </p>
+        <br />
+        <% if (isCollectionPublic) { %>
+        <p>Your collection is currently <strong>public.</strong></p>
+        <% } else { %>
+        <p>Your collection is currently <strong>private.</strong></p>
+        <% } %>
+      </div>
+      <div class="my-auto">
+        <form
+          method="POST"
+          action="/users/<%= user.username %>/profile?_method=PUT"
+        >
+          <button type="submit" class="button is-primary">
+            Make collection
+            <% if (isCollectionPublic) { %>
+            private
+            <% } else { %>
+            public
+            <% } %>
+          </button>
+        </form>
       </div>
     </div>
   </div>
