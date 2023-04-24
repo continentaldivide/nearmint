@@ -42,11 +42,17 @@ Check out my collection [here!](https://nearmint.app/users/andrew/collection)
 
 ## Installation Instructions
 
-- Fork/clone the repo
-- Run `npm i`
-- Run `sequelize db:create` to create the database nearmint_db in Postgres, then `sequelize db:migrate` to create your tables
-- Create a .env file in your repo and add it to your .gitignore; store your public and private Marvel API keys here with variable names `PUB_KEY` and `PRIV_KEY`
-- In your .env file, create an encryption key named `ENC_KEY` for managing cookies
+- Fork/clone the repo.
+- Run `npm i`.
+- You'll need to have Sequelize CLI tools installed for the next steps, so if you don't have that package installed already, run `npm i sequelize-cli`.  I recommend running this with the `-g` flag to install globally if there's any likelihood of you working with Sequelize on other projects going forward.
+- You're also going to need a Sequelize user in your local PSQL instance for the subsequent steps to work.  In your PSQL shell, run these commands to create this user and give it admin privs:
+```
+CREATE USER sequelize WITH SUPERUSER PASSWORD 'sequelize';
+ALTER USER sequelize WITH SUPERUSER;
+```
+- Run `sequelize db:create` to create the database nearmint_db in Postgres, then `sequelize db:migrate` to create your tables.
+- Create a .env file in your repo and add it to your .gitignore; store your public and private Marvel API keys here with variable names `PUB_KEY` and `PRIV_KEY`.
+- In your .env file, create an encryption key named `ENC_KEY` for managing cookies.
 
 ## Project Takeaways
 
