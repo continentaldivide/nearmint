@@ -1,11 +1,6 @@
 <%- include("../../partials/header.ejs") %>
 
-<h2>search results</h2>
-
-<% if (query) { %>
-<p>Search results for <%= query %></p>
-
-<% } if (series.length > 0) { %> <% series.forEach((series) => { %>
+<% if (series.length > 0) { %> <% series.forEach((series) => { %>
 <div class="series-search-result">
   <p><%= series.title %></p>
   <a href="<%= series.urls[0].url %>">view on marvel.com</a>
@@ -51,6 +46,19 @@
   </form>
   <% } %>
 </div>
-<% }) %> <% } else { %>
-<p>No results found. Please try another search.</p>
-<% } %> <%- include("../../partials/footer.ejs") %>
+<% }) %>
+
+<% } else { %>
+  <div class="columns is-flex is-justify-content-center mt-5">
+    <div class="column is-one-third">
+      <div class="message is-warning">
+        <div class="message-header">
+          <p>No results</p>
+        </div>
+        <div class="message-body">No results found for <%= query %>. Please try another search.</div>
+      </div>
+    </div>
+  </div>
+<% } %>
+
+<%- include("../../partials/footer.ejs") %>
