@@ -1,6 +1,8 @@
-<%- include("../../partials/header.ejs") %> <% if (comics.length > 0) { %> <%
-comics.forEach((comic) => { %>
+<%- include("../../partials/header.ejs") %>
+
 <div class="comics-container mt-5">
+<% if (comics.length > 0) { %>
+<% comics.forEach((comic) => { %>
   <div class="card mb-2 is-flex is-flex-direction-column">
     <div class="card-image">
       <figure class="image is-319x491 is-align-content-center">
@@ -101,7 +103,6 @@ comics.forEach((comic) => { %>
       </div>
     </div>
   </div>
-</div>
 <% }) %>
 
 <% } else { %>
@@ -119,5 +120,7 @@ comics.forEach((comic) => { %>
   </div>
 </div>
 <% } %>
+
+</div>
 
 <%- include("../../partials/footer.ejs") %>
