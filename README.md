@@ -56,13 +56,14 @@ ALTER USER sequelize WITH SUPERUSER;
 
 ## Project Takeaways
 
-Coming soon
+This project was a great opportunity for me to learn a ton about backend server + database architecture and make really robust use of an external data API.  It was also my first project using a CSS framework, which represented a totally new styling paradigm for me.
 
-## Upcoming Features
+Some key learnings:
 
-Coming soon
+- Early clarity re: the shape of the data you need in your database can save a ton of heartache later.  Plus, think outside the box and consider any possible datatype edge cases before they cause issues: I initially made my "issue_number" field an int, but later realized/remembered that Marvel occasionally does "X.1" issues for side stories -- so that value actually needed to be a float!
 
-## Changelog
+- Styling doesn't have to be perfect right away, but *some* attention to styling from the beginning makes for a much smaller lift when it's time to get everything looking production-ready.
 
-2023-04-16: added the ability for users to set their collection visibility to public\
-2023-04-14: published!
+- EJS is *hard*.  I'm very glad to have React under my belt now because I really hope never to need to use EJS again.  I think a large part of the pain here was simply lack of editor support for .ejs files, which created some formatting wackiness.  Either way, it's been a relief to get to leave this one behind (but I'm still glad I got to learn it)!
+
+Making this was a lot of work and a lot of fun -- in the end, I'm quite proud of it and eager to use everything I learned here in the projects I build going forward.
