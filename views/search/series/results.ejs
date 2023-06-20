@@ -1,64 +1,85 @@
-<%- include("../../partials/header.ejs") %>
-
-<% if (series.length > 0) { %> <% series.forEach((series) => { %>
-<div class="series-search-result">
-  <p><%= series.title %></p>
-  <a href="<%= series.urls[0].url %>">view on marvel.com</a>
-  <img
-    src="<%= series.thumbnail.path %>.<%= series.thumbnail.extension %>"
-    alt=""
-  />
-  <% if (user) { %>
-  <form method="POST" action="/users/<%= user.username %>/pull_list">
-    <input
-      type="text"
-      name="id"
-      id="id"
-      value="<%= series.id %>"
-      required
-      hidden
-    />
-    <input
-      type="text"
-      name="title"
-      id="title"
-      value="<%= series.title %>"
-      required
-      hidden
-    />
-    <input
-      type="text"
-      name="thumbnail_url"
-      id="thumbnail_url"
-      value="<%= series.thumbnail.path %>.<%= series.thumbnail.extension %>"
-      required
-      hidden
-    />
-    <input
-      type="text"
-      name="marvel_url"
-      id="marvel_url"
-      value="<%= series.urls[0].url %>"
-      required
-      hidden
-    />
-    <button type="submit">Add to my pull list</button>
-  </form>
-  <% } %>
-</div>
-<% }) %>
-
-<% } else { %>
-  <div class="columns is-flex is-justify-content-center mt-5">
-    <div class="column is-one-third">
-      <div class="message is-warning">
-        <div class="message-header">
-          <p>No results</p>
+<%- include("../../partials/header.ejs") %> <% if (series.length > 0) { %>
+<div class="columns is-flex is-justify-content-center mt-5">
+  <div class="column is-half">
+    <% series.forEach((series) => { %>
+    <div class="card mb-2 is-flex is-flex-direction-column">
+      <div class="card-image">
+        <figure class="image is-align-content-center">
+          <img
+            src="<%= series.thumbnail.path %>.<%= series.thumbnail.extension %>"
+            alt="<%= series.title %> image"
+          />
+        </figure>
+      </div>
+      <div
+        class="card-content is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-space-between"
+      >
+        <div class="media">
+          <div class="media-content">
+            <p class="title is-4"><%= series.title %></p>
+          </div>
         </div>
-        <div class="message-body">No results found for "<%= query %>". Please try another search.</div>
+
+        <div class="content is-flex is-flex-direction-column">
+          <a href="<%= series.urls[0].url %>" class="button is-small mb-2">
+            View on Marvel.com
+          </a>
+          <% if (user) { %>
+          <form method="POST" action="/users/<%= user.username %>/pull_list">
+            <input
+              type="text"
+              name="id"
+              id="id"
+              value="<%= series.id %>"
+              required
+              hidden
+            />
+            <input
+              type="text"
+              name="title"
+              id="title"
+              value="<%= series.title %>"
+              required
+              hidden
+            />
+            <input
+              type="text"
+              name="thumbnail_url"
+              id="thumbnail_url"
+              value="<%= series.thumbnail.path %>.<%= series.thumbnail.extension %>"
+              required
+              hidden
+            />
+            <input
+              type="text"
+              name="marvel_url"
+              id="marvel_url"
+              value="<%= series.urls[0].url %>"
+              required
+              hidden
+            />
+            <button type="submit" class="button is-small is-primary mb-2">
+              Add to my pull list
+            </button>
+          </form>
+          <% } %>
+        </div>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+</div>
+<% } else { %>
+<div class="columns is-flex is-justify-content-center mt-5">
+  <div class="column is-one-third">
+    <div class="message is-warning">
+      <div class="message-header">
+        <p>No results</p>
+      </div>
+      <div class="message-body">
+        No results found for "<%= query %>". Please try another search.
       </div>
     </div>
   </div>
-<% } %>
-
-<%- include("../../partials/footer.ejs") %>
+</div>
+<% } %> <%- include("../../partials/footer.ejs") %>
